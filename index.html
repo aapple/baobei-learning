@@ -339,12 +339,29 @@ const WORDS=[ /* 看图识字：常用字 + 词 + emoji */
   {ch:'鱼',py:'yú',word:'金鱼',emoji:'🐠'},{ch:'星',py:'xīng',word:'星星',emoji:'⭐'},
   {ch:'兔',py:'tù',word:'兔子',emoji:'🐰'},{ch:'猫',py:'māo',word:'小猫',emoji:'🐱'},
   /* 一年级高频字（幼小衔接） */
-  {ch:'人',py:'rén',word:'大人',emoji:'🧑'},{ch:'口',py:'kǒu',word:'张口',emoji:'👄'},
+  {ch:'人',py:'rén',word:'大人',emoji:'🧑'},
   {ch:'耳',py:'ěr',word:'耳朵',emoji:'👂'},{ch:'目',py:'mù',word:'目光',emoji:'👀'},
   {ch:'心',py:'xīn',word:'爱心',emoji:'❤️'},{ch:'石',py:'shí',word:'石头',emoji:'🪨'},
   {ch:'虫',py:'chóng',word:'小虫',emoji:'🐛'},{ch:'贝',py:'bèi',word:'贝壳',emoji:'🐚'},
   {ch:'伞',py:'sǎn',word:'雨伞',emoji:'☂️'},{ch:'灯',py:'dēng',word:'台灯',emoji:'💡'},
-  {ch:'电',py:'diàn',word:'闪电',emoji:'⚡'},{ch:'风',py:'fēng',word:'大风',emoji:'🌬️'}
+  {ch:'电',py:'diàn',word:'闪电',emoji:'⚡'},{ch:'风',py:'fēng',word:'大风',emoji:'🌬️'},
+  /* 常用字大扩充 */
+  {ch:'雪',py:'xuě',word:'下雪',emoji:'❄️'},{ch:'天',py:'tiān',word:'天空',emoji:'🌤️'},
+  {ch:'地',py:'dì',word:'大地',emoji:'🌍'},{ch:'河',py:'hé',word:'小河',emoji:'🏞️'},
+  {ch:'海',py:'hǎi',word:'大海',emoji:'🌊'},{ch:'田',py:'tián',word:'田地',emoji:'🌾'},
+  {ch:'竹',py:'zhú',word:'竹子',emoji:'🎋'},{ch:'林',py:'lín',word:'树林',emoji:'🌲'},
+  {ch:'米',py:'mǐ',word:'大米',emoji:'🍚'},
+  {ch:'菜',py:'cài',word:'青菜',emoji:'🥬'},{ch:'瓜',py:'guā',word:'西瓜',emoji:'🍉'},
+  {ch:'狗',py:'gǒu',word:'小狗',emoji:'🐶'},{ch:'鸡',py:'jī',word:'小鸡',emoji:'🐤'},
+  {ch:'龙',py:'lóng',word:'中国龙',emoji:'🐉'},{ch:'虎',py:'hǔ',word:'老虎',emoji:'🐯'},
+  {ch:'象',py:'xiàng',word:'大象',emoji:'🐘'},{ch:'熊',py:'xióng',word:'狗熊',emoji:'🐻'},
+  {ch:'鹿',py:'lù',word:'小鹿',emoji:'🦌'},{ch:'衣',py:'yī',word:'衣服',emoji:'👕'},
+  {ch:'帽',py:'mào',word:'帽子',emoji:'🎩'},{ch:'鞋',py:'xié',word:'鞋子',emoji:'👟'},
+  {ch:'家',py:'jiā',word:'全家',emoji:'👨‍👩‍👧'},{ch:'学',py:'xué',word:'学习',emoji:'📝'},
+  {ch:'校',py:'xiào',word:'学校',emoji:'🏫'},{ch:'饭',py:'fàn',word:'吃饭',emoji:'🥣'},
+  {ch:'笔',py:'bǐ',word:'写字',emoji:'🖌️'},
+  {ch:'多',py:'duō',word:'很多',emoji:'➕'},
+  {ch:'少',py:'shǎo',word:'很少',emoji:'➖'}
 ];
 
 /* 拼音（幼小衔接核心）：p=卡片字母 r=朗读呼读音 */
@@ -390,6 +407,67 @@ const PY_WORDS=[
   {py:'yǔ',ch:'雨',word:'下雨',emoji:'🌧️',read:'衣，鱼，雨。下雨的雨'}
 ];
 
+/* 反义词（幼小衔接） */
+const ANT_WORDS=[
+  ['大','小'],['多','少'],['上','下'],['左','右'],['前','后'],['高','低'],['长','短'],
+  ['黑','白'],['开','关'],['来','去'],['好','坏'],['天','地'],['日','夜'],['新','旧'],
+  ['快','慢'],['冷','热'],['干','湿'],['内','外'],['明','暗'],['粗','细']
+];
+/* 量词（幼小衔接） */
+const CL_WORDS=[
+  {n:'小鸟',cl:'只',emoji:'🐦'},{n:'花朵',cl:'朵',emoji:'🌸'},{n:'汽车',cl:'辆',emoji:'🚗'},
+  {n:'金鱼',cl:'条',emoji:'🐟'},{n:'书本',cl:'本',emoji:'📖'},{n:'苹果',cl:'个',emoji:'🍎'},
+  {n:'大树',cl:'棵',emoji:'🌳'},{n:'高山',cl:'座',emoji:'⛰️'},{n:'马儿',cl:'匹',emoji:'🐴'},
+  {n:'黄牛',cl:'头',emoji:'🐄'},{n:'衣服',cl:'件',emoji:'👕'},{n:'鞋子',cl:'双',emoji:'👟'},
+  {n:'雨伞',cl:'把',emoji:'☂️'},{n:'白纸',cl:'张',emoji:'📄'},{n:'水',cl:'杯',emoji:'🥤'},
+  {n:'门',cl:'扇',emoji:'🚪'},{n:'星星',cl:'颗',emoji:'⭐'},{n:'小河',cl:'条',emoji:'🏞️'},
+  {n:'香蕉',cl:'根',emoji:'🍌'},{n:'月亮',cl:'个',emoji:'🌙'}
+];
+/* 看图应用题（一年级数学） */
+const STORY_PROBLEMS=[
+  {q:'树上有 3 只小鸟，又飞来了 2 只，一共有几只？',emoji:'🐦🐦🐦 ➕ 🐦🐦',ans:5,say:'3 加 2 等于 5，一共 5 只小鸟！'},
+  {q:'盘子里有 6 个苹果，吃掉了 2 个，还剩几个？',emoji:'🍎🍎🍎🍎🍎🍎',ans:4,say:'6 减 2 等于 4，还剩 4 个苹果！'},
+  {q:'池塘里有 4 只鸭子，又游来 3 只，一共有几只？',emoji:'🦆🦆🦆🦆 ➕ 🦆🦆🦆',ans:7,say:'4 加 3 等于 7，一共 7 只鸭子！'},
+  {q:'小明有 5 颗糖，给了小红 2 颗，还剩几颗？',emoji:'🍬🍬🍬🍬🍬',ans:3,say:'5 减 2 等于 3，还剩 3 颗糖！'},
+  {q:'花园里有 2 只蝴蝶，又飞来 4 只，一共有几只？',emoji:'🦋🦋 ➕ 🦋🦋🦋🦋',ans:6,say:'2 加 4 等于 6，一共 6 只蝴蝶！'},
+  {q:'停车场有 8 辆汽车，开走了 3 辆，还剩几辆？',emoji:'🚗🚗🚗🚗🚗🚗🚗🚗',ans:5,say:'8 减 3 等于 5，还剩 5 辆汽车！'},
+  {q:'妈妈买了 3 个橘子和 3 根香蕉，一共有几个水果？',emoji:'🍊🍊🍊 ➕ 🍌🍌🍌',ans:6,say:'3 加 3 等于 6，一共 6 个水果！'},
+  {q:'教室里有 10 个小朋友，出去了 4 个，还剩几个？',emoji:'🧑🧑🧑🧑🧑🧑🧑🧑🧑🧑',ans:6,say:'10 减 4 等于 6，还剩 6 个小朋友！'},
+  {q:'小兔摘了 7 个蘑菇，送给小松鼠 2 个，还有几个？',emoji:'🍄🍄🍄🍄🍄🍄🍄',ans:5,say:'7 减 2 等于 5，还有 5 个蘑菇！'},
+  {q:'天上有 9 朵云，飘走了 5 朵，还剩几朵？',emoji:'☁️☁️☁️☁️☁️☁️☁️☁️☁️',ans:4,say:'9 减 5 等于 4，还剩 4 朵云！'},
+  {q:'一支铅笔 2 元，一本本子 3 元，一共要几元？',emoji:'✏️ ➕ 📒',ans:5,say:'2 加 3 等于 5，一共要 5 元！'},
+  {q:'小明上午读了 4 页书，下午又读了 4 页，一共读了几页？',emoji:'📖📖📖📖 ➕ 📖📖📖📖',ans:8,say:'4 加 4 等于 8，一共读了 8 页！'},
+  {q:'鱼缸里有 5 条金鱼，又买来 5 条，一共有几条？',emoji:'🐟🐟🐟🐟🐟 ➕ 🐟🐟🐟🐟🐟',ans:10,say:'5 加 5 等于 10，一共 10 条金鱼！'},
+  {q:'桌上有 7 块饼干，吃了 1 块，还剩几块？',emoji:'🍪🍪🍪🍪🍪🍪🍪',ans:6,say:'7 减 1 等于 6，还剩 6 块饼干！'},
+  {q:'哥哥有 6 张卡片，弟弟有 3 张，两人一共有几张？',emoji:'🃏🃏🃏🃏🃏🃏 ➕ 🃏🃏🃏',ans:9,say:'6 加 3 等于 9，一共 9 张卡片！'},
+  {q:'公交车上有 10 个人，到站下了 2 人又上来 3 人，现在车上有几人？',emoji:'🚌',ans:11,say:'10 减 2 等于 8，8 加 3 等于 11，现在有 11 人！'}
+];
+/* 人民币购物（一年级数学） */
+const SHOP_ITEMS=[
+  {n:'铅笔',e:'✏️',p:2},{n:'橡皮',e:'🧽',p:1},{n:'本子',e:'📒',p:3},{n:'棒棒糖',e:'🍭',p:2},
+  {n:'气球',e:'🎈',p:4},{n:'小汽车',e:'🚗',p:8},{n:'贴纸',e:'🌟',p:3},{n:'冰淇淋',e:'🍦',p:5},
+  {n:'面包',e:'🍞',p:6},{n:'果汁',e:'🧃',p:7}
+];
+/* 英语单词启蒙 */
+const EN_WORDS=[
+  {w:'dog',zh:'小狗',emoji:'🐶'},{w:'cat',zh:'小猫',emoji:'🐱'},{w:'bird',zh:'小鸟',emoji:'🐦'},
+  {w:'fish',zh:'鱼',emoji:'🐟'},{w:'apple',zh:'苹果',emoji:'🍎'},{w:'banana',zh:'香蕉',emoji:'🍌'},
+  {w:'orange',zh:'橘子',emoji:'🍊'},{w:'grape',zh:'葡萄',emoji:'🍇'},{w:'sun',zh:'太阳',emoji:'☀️'},
+  {w:'moon',zh:'月亮',emoji:'🌙'},{w:'star',zh:'星星',emoji:'⭐'},{w:'tree',zh:'树',emoji:'🌳'},
+  {w:'flower',zh:'花',emoji:'🌸'},{w:'car',zh:'汽车',emoji:'🚗'},{w:'bus',zh:'公交车',emoji:'🚌'},
+  {w:'duck',zh:'鸭子',emoji:'🦆'},{w:'panda',zh:'熊猫',emoji:'🐼'},{w:'milk',zh:'牛奶',emoji:'🥛'},
+  {w:'cake',zh:'蛋糕',emoji:'🍰'},{w:'egg',zh:'鸡蛋',emoji:'🥚'}
+];
+/* 排序挑战（逻辑） */
+const ORDER_SETS=[
+  {t:'种子长大记',seq:[['🌱','种子'],['🌿','发芽'],['🌸','开花'],['🍎','结果']]},
+  {t:'小鸡出壳记',seq:[['🥚','鸡蛋'],['🐣','破壳'],['🐤','小鸡'],['🐔','大公鸡']]},
+  {t:'一天的时间',seq:[['🌅','早上'],['☀️','中午'],['🌇','下午'],['🌙','晚上']]},
+  {t:'睡觉前的准备',seq:[['🍚','吃晚饭'],['🦷','刷牙'],['📖','听故事'],['😴','睡觉']]},
+  {t:'下雨之后',seq:[['☁️','乌云来了'],['🌧️','下雨了'],['🌈','彩虹出来'],['☀️','天晴了']]},
+  {t:'慢慢长大',seq:[['👶','小宝宝'],['🧒','小朋友'],['👨','大人'],['👴','老爷爷']]}
+];
+
 const POEMS=[
  {t:'静夜思',a:'李白',lines:[
    [['床','chuáng'],['前','qián'],['明','míng'],['月','yuè'],['光','guāng']],
@@ -428,7 +506,46 @@ const POEMS=[
    [['空','kōng'],['山','shān'],['不','bù'],['见','jiàn'],['人','rén']],
    [['但','dàn'],['闻','wén'],['人','rén'],['语','yǔ'],['响','xiǎng']],
    [['返','fǎn'],['景','jǐng'],['入','rù'],['深','shēn'],['林','lín']],
-   [['复','fù'],['照','zhào'],['青','qīng'],['苔','tái'],['上','shàng']]]}
+   [['复','fù'],['照','zhào'],['青','qīng'],['苔','tái'],['上','shàng']]]},
+{t:'画',a:'王维',lines:[
+   [['远','yuǎn'],['看','kàn'],['山','shān'],['有','yǒu'],['色','sè']],
+   [['近','jìn'],['听','tīng'],['水','shuǐ'],['无','wú'],['声','shēng']],
+   [['春','chūn'],['去','qù'],['花','huā'],['还','hái'],['在','zài']],
+   [['人','rén'],['来','lái'],['鸟','niǎo'],['不','bù'],['惊','jīng']]]},
+{t:'池上',a:'白居易',lines:[
+   [['小','xiǎo'],['娃','wá'],['撑','chēng'],['小','xiǎo'],['艇','tǐng']],
+   [['偷','tōu'],['采','cǎi'],['白','bái'],['莲','lián'],['回','huí']],
+   [['不','bù'],['解','jiě'],['藏','cáng'],['踪','zōng'],['迹','jì']],
+   [['浮','fú'],['萍','píng'],['一','yí'],['道','dào'],['开','kāi']]]},
+{t:'小池',a:'杨万里',lines:[
+   [['泉','quán'],['眼','yǎn'],['无','wú'],['声','shēng'],['惜','xī'],['细','xì'],['流','liú']],
+   [['树','shù'],['阴','yīn'],['照','zhào'],['水','shuǐ'],['爱','ài'],['晴','qíng'],['柔','róu']],
+   [['小','xiǎo'],['荷','hé'],['才','cái'],['露','lù'],['尖','jiān'],['尖','jiān'],['角','jiǎo']],
+   [['早','zǎo'],['有','yǒu'],['蜻','qīng'],['蜓','tíng'],['立','lì'],['上','shàng'],['头','tóu']]]},
+{t:'寻隐者不遇',a:'贾岛',lines:[
+   [['松','sōng'],['下','xià'],['问','wèn'],['童','tóng'],['子','zǐ']],
+   [['言','yán'],['师','shī'],['采','cǎi'],['药','yào'],['去','qù']],
+   [['只','zhǐ'],['在','zài'],['此','cǐ'],['山','shān'],['中','zhōng']],
+   [['云','yún'],['深','shēn'],['不','bù'],['知','zhī'],['处','chù']]]},
+{t:'悯农·其一',a:'李绅',lines:[
+   [['春','chūn'],['种','zhòng'],['一','yí'],['粒','lì'],['粟','sù']],
+   [['秋','qiū'],['收','shōu'],['万','wàn'],['颗','kē'],['子','zǐ']],
+   [['四','sì'],['海','hǎi'],['无','wú'],['闲','xián'],['田','tián']],
+   [['农','nóng'],['夫','fū'],['犹','yóu'],['饿','è'],['死','sǐ']]]},
+{t:'江南',a:'汉乐府',lines:[
+   [['江','jiāng'],['南','nán'],['可','kě'],['采','cǎi'],['莲','lián']],
+   [['莲','lián'],['叶','yè'],['何','hé'],['田','tián'],['田','tián']],
+   [['鱼','yú'],['戏','xì'],['莲','lián'],['叶','yè'],['间','jiān']]]},
+{t:'所见',a:'袁枚',lines:[
+   [['牧','mù'],['童','tóng'],['骑','qí'],['黄','huáng'],['牛','niú']],
+   [['歌','gē'],['声','shēng'],['振','zhèn'],['林','lín'],['樾','yuè']],
+   [['意','yì'],['欲','yù'],['捕','bǔ'],['鸣','míng'],['蝉','chán']],
+   [['忽','hū'],['然','rán'],['闭','bì'],['口','kǒu'],['立','lì']]]},
+{t:'画鸡',a:'唐寅',lines:[
+   [['头','tóu'],['上','shàng'],['红','hóng'],['冠','guān'],['不','bù'],['用','yòng'],['裁','cái']],
+   [['满','mǎn'],['身','shēn'],['雪','xuě'],['白','bái'],['走','zǒu'],['将','jiāng'],['来','lái']],
+   [['平','píng'],['生','shēng'],['不','bù'],['敢','gǎn'],['轻','qīng'],['言','yán'],['语','yǔ']],
+   [['一','yí'],['叫','jiào'],['千','qiān'],['门','mén'],['万','wàn'],['户','hù'],['开','kāi']]]}
 ];
 
 const SAFETY=[ /* 生活与安全常识 */
@@ -448,7 +565,14 @@ const SAFETY=[ /* 生活与安全常识 */
   {q:'放学回家，书包应该谁来整理？',opts:['自己整理','全部让妈妈整理','随便乱放'],ans:0,tip:'自己的书包自己整理，削好铅笔、装好课本，做能干的一年级小学生！'},
   {q:'早上见到老师，应该怎么做？',opts:['大声问好','低头跑过去','装作没看见'],ans:0,tip:'见到老师和同学主动问好，做个有礼貌的小学生，大家都会喜欢你！'},
   {q:'晚上几点睡觉最好呢？',opts:['9 点左右','12 点','想几点就几点'],ans:0,tip:'早睡早起精神好，晚上 9 点左右睡觉，第二天上课才不打瞌睡哦！'},
-  {q:'写作业的时候，坐姿应该怎么样？',opts:['坐端正，一尺一拳一寸','趴在桌上','躺在床上'],ans:0,tip:'眼睛离书本一尺，胸口离桌子一拳，手指离笔尖一寸，保护眼睛写字又漂亮！'}
+  {q:'写作业的时候，坐姿应该怎么样？',opts:['坐端正，一尺一拳一寸','趴在桌上','躺在床上'],ans:0,tip:'眼睛离书本一尺，胸口离桌子一拳，手指离笔尖一寸，保护眼睛写字又漂亮！'},
+  /* 天气与穿衣 */
+  {q:'下雪天出门，应该穿什么？',opts:['厚厚的棉袄','短袖短裤','拖鞋'],ans:0,tip:'下雪天很冷，要穿棉袄、戴手套，不然会感冒哦！'},
+  {q:'下雨天出门，最好带上什么？',opts:['雨伞','电风扇','墨镜'],ans:0,tip:'下雨带好雨伞、穿上雨鞋，就不会淋湿啦。'},
+  {q:'夏天太阳很大，出门应该？',opts:['戴帽子、多喝水','一直晒太阳','不喝水到处跑'],ans:0,tip:'夏天要戴帽子防晒，多喝水才不会中暑！'},
+  {q:'冬天小手冰凉，应该怎么办？',opts:['戴上手套','放进冰水里','不管它'],ans:0,tip:'冬天戴上手套、搓搓小手，暖暖和和！'},
+  {q:'刮大风的时候，不要在哪里玩？',opts:['广告牌和大树下','自己家里','教室里'],ans:0,tip:'大风会把广告牌和树枝吹落，刮风天要远离，待在安全的室内！'},
+  {q:'天气热想游泳，应该去哪里？',opts:['正规泳池，有大人陪着','野外的河里','池塘里'],ans:0,tip:'游泳要去正规泳池并让大人陪同，野外的河塘很危险！'}
 ];
 
 const MEM_CARDS=['🐶','🐱','🐰','🐼','🦊','🐸','🐵','🦁'];
@@ -469,6 +593,7 @@ function freshState(){return{
   streak:{last:'',days:0},
   badges:{},
   letters:{matched:0}, hanzi:{correct:0}, pinyin:{correct:0}, clock:{correct:0},
+  story:{correct:0}, antonym:{correct:0}, measure:{correct:0}, money:{correct:0}, enword:{correct:0}, order:{win:0},
   numbers:{addCorrect:0,countCorrect:0},
   poems:{read:{}},
   logic:{correct:0,memWin:0},
@@ -784,9 +909,15 @@ const BADGES=[
   {id:'hanzi',ic:'📖',name:'识字小学者',desc:'看图识字答对 10 题',cond:s=>s.hanzi.correct>=10},
   {id:'pinyin',ic:'✏️',name:'拼音小能手',desc:'拼读答对 10 题',cond:s=>s.pinyin.correct>=10},
   {id:'clock',ic:'⏰',name:'时间小主人',desc:'认对 5 次钟表',cond:s=>s.clock.correct>=5},
+  {id:'story',ic:'📐',name:'应用小达人',desc:'应用题答对 10 题',cond:s=>s.story.correct>=10},
+  {id:'ant',ic:'🔄',name:'反义词高手',desc:'反义词答对 10 题',cond:s=>s.antonym.correct>=10},
+  {id:'cl',ic:'📏',name:'量词小专家',desc:'量词答对 10 题',cond:s=>s.measure.correct>=10},
+  {id:'word',ic:'🔠',name:'英语小明星',desc:'单词答对 10 题',cond:s=>s.enword.correct>=10},
+  {id:'money',ic:'💰',name:'理财小能手',desc:'购物题答对 10 题',cond:s=>s.money.correct>=10},
+  {id:'order',ic:'🔀',name:'排序小能手',desc:'排序挑战成功 3 次',cond:s=>s.order.win>=3},
   {id:'math',ic:'🧮',name:'数学小天才',desc:'算术答对 10 题',cond:s=>s.numbers.addCorrect>=10},
   {id:'count',ic:'🍎',name:'数数小能手',desc:'数数答对 10 题',cond:s=>s.numbers.countCorrect>=10},
-  {id:'poem',ic:'📜',name:'古诗小状元',desc:'朗读全部 8 首古诗',cond:s=>Object.keys(s.poems.read).length>=8},
+  {id:'poem',ic:'📜',name:'古诗小状元',desc:'朗读全部 16 首古诗',cond:s=>Object.keys(s.poems.read).length>=16},
   {id:'memory',ic:'🃏',name:'记忆小超人',desc:'赢 1 次翻牌游戏',cond:s=>s.logic.memWin>=1},
   {id:'logic',ic:'🧩',name:'逻辑小博士',desc:'逻辑题答对 10 题',cond:s=>s.logic.correct>=10},
   {id:'safe',ic:'🛡️',name:'安全小卫士',desc:'安全问答答对 5 题',cond:s=>s.safety.correct>=5},
@@ -816,6 +947,10 @@ const TASK_POOL=[
   {id:'t_hanzi',ic:'📖',name:'识字答对 3 题',hint:'去汉字城堡看图识字'},
   {id:'t_pinyin',ic:'✏️',name:'拼读答对 3 题',hint:'去拼音王国拼一拼'},
   {id:'t_clock',ic:'⏰',name:'认对 2 次时间',hint:'去数字王国认时钟'},
+  {id:'t_story',ic:'📐',name:'应用题答对 2 题',hint:'去数字王国做应用题'},
+  {id:'t_antonym',ic:'🔄',name:'反义词答对 3 题',hint:'去汉字城堡玩反义词'},
+  {id:'t_word',ic:'🔠',name:'单词答对 3 题',hint:'去字母乐园学英语单词'},
+  {id:'t_order',ic:'🔀',name:'完成 1 次排序',hint:'去逻辑小岛排顺序'},
   {id:'t_math',ic:'🧮',name:'算术答对 3 题',hint:'去数字王国做算术'},
   {id:'t_poem',ic:'📜',name:'朗读 1 首古诗',hint:'去古诗花园点一首诗'},
   {id:'t_logic',ic:'🧩',name:'逻辑答对 3 题',hint:'去逻辑小岛挑战'},
@@ -870,11 +1005,11 @@ renderer.home=function(){
   ensureDaily();
   const s=state;
   const prog={
-    abc:Math.min(100,s.letters.matched*20), hanzi:Math.min(100,s.hanzi.correct*5),
+    abc:Math.min(100,(s.letters.matched*20+s.enword.correct*4)), hanzi:Math.min(100,(s.hanzi.correct+s.antonym.correct+s.measure.correct)*3),
     pinyin:Math.min(100,s.pinyin.correct*5),
-    num:Math.min(100,(s.numbers.addCorrect+s.numbers.countCorrect+s.clock.correct)*2.5),
-    poem:Math.round(Object.keys(s.poems.read).length/8*100),
-    logic:Math.min(100,(s.logic.correct+s.logic.memWin*5)*5),
+    num:Math.min(100,(s.numbers.addCorrect+s.numbers.countCorrect+s.clock.correct+s.story.correct+s.money.correct)*2),
+    poem:Math.round(Object.keys(s.poems.read).length/16*100),
+    logic:Math.min(100,(s.logic.correct+s.logic.memWin*5+s.order.win*10)*4),
     safe:Math.min(100,s.safety.correct*20)
   };
   const ring=(val,color,lab)=>{
@@ -913,15 +1048,38 @@ renderer.home=function(){
 };
 
 /* ============ 字母乐园 ============ */
+let abcTabCur='abc';
 renderer.abc=function(){
-  $('view-abc').innerHTML='<div class="card">'+
-    '<div class="mtitle">🔤 字母乐园</div><p class="sub">点一点，听发音；再来玩大小写配对赢星星！</p>'+
-    '<div class="tilegrid">'+LETTERS.map((L,i)=>
-      '<button class="tile" style="background:'+LCOLOR[i%5]+'" onclick="speak(\''+L+'\',\'en-US\')">'+
-      '<span class="up">'+L+'</span><span class="low">'+L.toLowerCase()+'</span></button>').join('')+'</div>'+
-    '<div class="btnrow"><button class="btn blue" onclick="abcGame()">🎮 开始配对游戏</button></div>'+
-    '<div id="abcBox"></div></div>';
+  $('view-abc').innerHTML='<div class="card"><div class="mtitle">🔤 字母乐园</div>'+
+    '<div class="seg" id="abcSeg">'+
+      '<button data-t="abc" class="'+(abcTabCur==='abc'?'on':'')+'" onclick="abcTab(\'abc\',this)">🔤 字母卡</button>'+
+      '<button data-t="word" class="'+(abcTabCur==='word'?'on':'')+'" onclick="abcTab(\'word\',this)">🔠 英语单词</button>'+
+    '</div><div id="abcBody"></div></div>';
+  abcRun();
 };
+function abcTab(t,btn){
+  abcTabCur=t;
+  document.querySelectorAll('#abcSeg button').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  abcRun();
+}
+function abcRun(){
+  if(abcTabCur==='abc'){
+    $('abcBody').innerHTML='<p class="sub">点一点，听发音；再来玩大小写配对赢星星！</p>'+
+      '<div class="tilegrid">'+LETTERS.map((L,i)=>
+        '<button class="tile" style="background:'+LCOLOR[i%5]+'" onclick="speak(\''+L+'\',\'en-US\')">'+
+        '<span class="up">'+L+'</span><span class="low">'+L.toLowerCase()+'</span></button>').join('')+'</div>'+
+      '<div class="btnrow"><button class="btn blue" onclick="abcGame()">🎮 开始配对游戏</button></div>'+
+      '<div id="abcBox"></div>';
+  }else{
+    $('abcBody').innerHTML='<p class="sub">看图片学英语单词，美国小朋友 Ana 带你读！</p>'+
+      '<div class="tilegrid">'+EN_WORDS.map((w,i)=>
+        '<button class="tile" style="background:'+LCOLOR[i%5]+'" onclick="speak(\''+w.w+'\',\'en-US\')">'+
+        '<span class="t-emoji">'+w.emoji+'</span><span class="t-ch" style="font-size:1.05em">'+w.w+'</span><span class="low">'+w.zh+'</span></button>').join('')+'</div>'+
+      '<div class="btnrow"><button class="btn blue" onclick="enGame()">🎮 开始单词游戏</button></div>'+
+      '<div id="abcBox"></div>';
+  }
+}
 function abcGame(){
   const box=$('abcBox');
   const L=LETTERS[rnd(0,25)];
@@ -940,6 +1098,37 @@ function abcAns(btn){
     if(state.letters.matched===5)completeTask('t_abc');
     setTimeout(abcGame,700);
   }else wrong(btn,L.toLowerCase());
+}
+
+/* ---- 英语单词（字母乐园）---- */
+let enCur=null;
+function enGame(){
+  enCur=pick(EN_WORDS);
+  const w=enCur;
+  const others=shuffle(EN_WORDS.filter(x=>x.w!==w.w)).slice(0,3);
+  const opts=shuffle([w].concat(others));
+  if(Math.random()<.5){ /* 看图选单词 */
+    $('abcBox').innerHTML='<div class="card" style="margin-top:1em"><p class="sub center">看一看图片，选出正确的英文单词 👇</p>'+
+      '<div class="bigq">'+w.emoji+'</div>'+
+      '<div style="text-align:center"><button class="speakbtn" onclick="speak(\''+w.w+'\',\'en-US\')">🔊</button></div>'+
+      '<div class="grid4">'+opts.map(o=>'<button class="opt" style="font-size:1.25em" data-w="'+o.w+'" onclick="enAns(this)">'+o.w+'</button>').join('')+'</div></div>';
+    speak(w.zh+'！Which one is it? '+w.w,'zh-CN');
+  }else{ /* 看单词选图 */
+    $('abcBox').innerHTML='<div class="card" style="margin-top:1em"><p class="sub center">读一读单词，选出对应的图片 👇</p>'+
+      '<div class="bigq" style="color:var(--accent5)" onclick="speak(\''+w.w+'\',\'en-US\')">'+w.w+'</div>'+
+      '<div style="text-align:center"><button class="speakbtn" onclick="speak(\''+w.w+'\',\'en-US\')">🔊</button></div>'+
+      '<div class="grid4">'+opts.map(o=>'<button class="opt" style="font-size:1.8em" data-w="'+o.w+'" onclick="enAns(this)">'+o.emoji+'</button>').join('')+'</div></div>';
+    speak(w.w,'en-US');
+  }
+}
+function enAns(btn){
+  if(btn.dataset.w===enCur.w){
+    correct(btn);
+    speak(enCur.w+'！'+enCur.zh,'en-US');
+    state.enword.correct++;save();checkBadges();
+    if(state.enword.correct%3===0)completeTask('t_word');
+    setTimeout(enGame,1200);
+  }else wrong(btn,'Try again 再想一想');
 }
 
 /* ---- 拼音王国（幼小衔接）---- */
@@ -990,15 +1179,46 @@ function pyAns(btn){
 }
 
 /* ============ 汉字城堡 ============ */
+let hanziTabCur='hanzi';
 renderer.hanzi=function(){
-  $('view-hanzi').innerHTML='<div class="card">'+
-    '<div class="mtitle">📖 汉字城堡</div><p class="sub">点汉字卡片听朗读；玩「看图选字」，认识一年级常用字！</p>'+
-    '<div class="tilegrid">'+WORDS.map((w,i)=>
-      '<button class="tile" style="background:'+LCOLOR[i%5]+'" onclick="speak(\''+w.ch+'，'+w.word+'\',\'zh-CN\')">'+
-      '<span class="t-emoji">'+w.emoji+'</span><span class="t-ch">'+w.ch+'</span><span class="low">'+w.py+'</span></button>').join('')+'</div>'+
-    '<div class="btnrow"><button class="btn pink" onclick="hanziGame()">🎮 开始看图选字</button></div>'+
-    '<div id="hanziBox"></div></div>';
+  $('view-hanzi').innerHTML='<div class="card"><div class="mtitle">📖 汉字城堡</div>'+
+    '<div class="seg" id="hanziSeg">'+
+      '<button data-t="hanzi" class="'+(hanziTabCur==='hanzi'?'on':'')+'" onclick="hanziTab(\'hanzi\',this)">📚 识字卡</button>'+
+      '<button data-t="ant" class="'+(hanziTabCur==='ant'?'on':'')+'" onclick="hanziTab(\'ant\',this)">🔄 反义词</button>'+
+      '<button data-t="cl" class="'+(hanziTabCur==='cl'?'on':'')+'" onclick="hanziTab(\'cl\',this)">📏 量词</button>'+
+    '</div><div id="hanziBody"></div></div>';
+  hanziRun();
 };
+function hanziTab(t,btn){
+  hanziTabCur=t;
+  document.querySelectorAll('#hanziSeg button').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  hanziRun();
+}
+function hanziRun(){
+  if(hanziTabCur==='hanzi'){
+    $('hanziBody').innerHTML='<p class="sub">点汉字卡片听朗读；玩「看图选字」，认识一年级常用字！</p>'+
+      '<div class="tilegrid">'+WORDS.map((w,i)=>
+        '<button class="tile" style="background:'+LCOLOR[i%5]+'" onclick="speak(\''+w.ch+'，'+w.word+'\',\'zh-CN\')">'+
+        '<span class="t-emoji">'+w.emoji+'</span><span class="t-ch">'+w.ch+'</span><span class="low">'+w.py+'</span></button>').join('')+'</div>'+
+      '<div class="btnrow"><button class="btn pink" onclick="hanziGame()">🎮 开始看图选字</button></div>'+
+      '<div id="hanziBox"></div>';
+  }else if(hanziTabCur==='ant'){
+    $('hanziBody').innerHTML='<p class="sub">点卡片听一对一对的反义词，再玩游戏赢星星！</p>'+
+      '<div class="tilegrid">'+ANT_WORDS.map((p,i)=>
+        '<button class="tile" style="background:'+LCOLOR[i%5]+'" onclick="speak(\''+p[0]+'对'+p[1]+'\',\'zh-CN\')">'+
+        '<span class="t-ch">'+p[0]+' ↔ '+p[1]+'</span></button>').join('')+'</div>'+
+      '<div class="btnrow"><button class="btn pink" onclick="antGame()">🎮 反义词对对碰</button></div>'+
+      '<div id="antBox"></div>';
+  }else{
+    $('hanziBody').innerHTML='<p class="sub">一（只）鸟、一（朵）花……量词用对，你就是小诗人！</p>'+
+      '<div class="tilegrid">'+CL_WORDS.map((w,i)=>
+        '<button class="tile" style="background:'+LCOLOR[i%5]+'" onclick="speak(\'一'+w.cl+w.n+'\',\'zh-CN\')">'+
+        '<span class="t-emoji">'+w.emoji+'</span><span class="t-ch">一'+w.cl+w.n+'</span></button>').join('')+'</div>'+
+      '<div class="btnrow"><button class="btn pink" onclick="clGame()">🎮 量词填空</button></div>'+
+      '<div id="clBox"></div>';
+  }
+}
 function hanziGame(){
   const box=$('hanziBox');
   const w=pick(WORDS);
@@ -1022,19 +1242,72 @@ function hanziAns(btn){
   }else wrong(btn,'这是'+w.word+'的'+w.ch+'哦');
 }
 
+/* ---- 反义词对对碰（汉字城堡）---- */
+let antCur='', antAnsWord='';
+function antGame(){
+  const pair=pick(ANT_WORDS);
+  const rev=Math.random()<.5;
+  antCur=rev?pair[1]:pair[0];
+  antAnsWord=rev?pair[0]:pair[1];
+  const others=shuffle(ANT_WORDS.flat().filter(x=>x!==antCur&&x!==antAnsWord)).slice(0,3);
+  const opts=shuffle([antAnsWord].concat(others));
+  $('antBox').innerHTML='<div class="card" style="margin-top:1em"><p class="sub center">想一想，它的反义词是哪个？👇</p>'+
+    '<div class="bigq" style="color:var(--accent5)">'+antCur+'</div>'+
+    '<div style="text-align:center"><button class="speakbtn" onclick="speak(\''+antCur+'，它的反义词是哪个？\',\'zh-CN\')">🔊</button></div>'+
+    '<div class="grid4">'+opts.map(o=>'<button class="opt" style="font-size:1.7em" data-w="'+o+'" onclick="antAns(this)">'+o+'</button>').join('')+'</div></div>';
+  speak(antCur+'，它的反义词是哪个？','zh-CN');
+}
+function antAns(btn){
+  if(btn.dataset.w===antAnsWord){
+    correct(btn);
+    speak(antCur+'对'+antAnsWord+'！','zh-CN');
+    state.antonym.correct++;save();checkBadges();
+    if(state.antonym.correct%3===0)completeTask('t_antonym');
+    setTimeout(antGame,1300);
+  }else wrong(btn,'想一想相反的意思哦');
+}
+
+/* ---- 量词填空（汉字城堡）---- */
+let clCur=null;
+function clGame(){
+  clCur=pick(CL_WORDS);
+  const w=clCur;
+  const cls=[];
+  CL_WORDS.forEach(x=>{if(cls.indexOf(x.cl)<0)cls.push(x.cl);});
+  const others=shuffle(cls.filter(c=>c!==w.cl)).slice(0,3);
+  const opts=shuffle([w.cl].concat(others));
+  $('clBox').innerHTML='<div class="card" style="margin-top:1em"><p class="sub center">填一填：一（ ？ ）'+w.n+' 👇</p>'+
+    '<div class="bigq">'+w.emoji+'</div>'+
+    '<div style="text-align:center"><button class="speakbtn" onclick="speak(\'一什么'+w.n+'\',\'zh-CN\')">🔊</button></div>'+
+    '<div class="grid4">'+opts.map(o=>'<button class="opt" style="font-size:1.5em" data-w="'+o+'" onclick="clAns(this)">'+o+'</button>').join('')+'</div></div>';
+  speak('一什么'+w.n+'？','zh-CN');
+}
+function clAns(btn){
+  const w=clCur;
+  if(btn.dataset.w===w.cl){
+    correct(btn);
+    speak('对啦，一'+w.cl+w.n+'！','zh-CN');
+    state.measure.correct++;save();checkBadges();
+    if(state.measure.correct%3===0)completeTask('t_measure');
+    setTimeout(clGame,1300);
+  }else wrong(btn,'再想一想用哪个量词');
+}
+
 /* ============ 数字王国 ============ */
 let numTabCur='count';
 renderer.num=function(){
-  $('view-num').innerHTML='<div class="card"><div class="mtitle">🧮 数字王国</div><p class="sub">数一数、算一算、比一比、认时钟，成为数学小天才！</p>'+
+  $('view-num').innerHTML='<div class="card"><div class="mtitle">🧮 数字王国</div><p class="sub">数一数、算一算、比大小、认时钟、应用题、买东西，成为数学小天才！</p>'+
     '<div class="seg" id="numSeg">'+
       '<button data-t="count" class="'+(numTabCur==='count'?'on':'')+'" onclick="numTab(\'count\',this)">🍒 数一数</button>'+
       '<button data-t="calc" class="'+(numTabCur==='calc'?'on':'')+'" onclick="numTab(\'calc\',this)">➕ 算一算</button>'+
       '<button data-t="cmp" class="'+(numTabCur==='cmp'?'on':'')+'" onclick="numTab(\'cmp\',this)">⚖️ 比大小</button>'+
       '<button data-t="clock" class="'+(numTabCur==='clock'?'on':'')+'" onclick="numTab(\'clock\',this)">⏰ 认时钟</button>'+
+      '<button data-t="story" class="'+(numTabCur==='story'?'on':'')+'" onclick="numTab(\'story\',this)">📐 应用题</button>'+
+      '<button data-t="money" class="'+(numTabCur==='money'?'on':'')+'" onclick="numTab(\'money\',this)">💰 买东西</button>'+
     '</div><div id="numBox"></div></div>';
   numRun();
 };
-function numRun(){numTabCur==='count'?numCount():numTabCur==='calc'?numCalc():numTabCur==='cmp'?numCmp():clockGame();}
+function numRun(){numTabCur==='count'?numCount():numTabCur==='calc'?numCalc():numTabCur==='cmp'?numCmp():numTabCur==='clock'?clockGame():numTabCur==='story'?storyGame():moneyGame();}
 function numTab(t,btn){
   numTabCur=t;
   document.querySelectorAll('#numSeg button').forEach(b=>b.classList.remove('on'));
@@ -1139,6 +1412,66 @@ function clockAns(btn){
   }else wrong(btn,'先看短短的时针哦');
 }
 
+/* ---- 看图应用题（数字王国）---- */
+function numOpts(ans){
+  const pool=[ans+1,ans-1,ans+2,ans+3,ans-2].filter(v=>v>0&&v!==ans);
+  return shuffle([ans].concat(shuffle(pool).slice(0,3)));
+}
+let storyCur=null;
+function storyGame(){
+  storyCur=pick(STORY_PROBLEMS);
+  const s=storyCur;
+  $('numBox').innerHTML='<p class="sub center">听一听小故事，算一算 👇</p>'+
+    '<div class="bigq" style="font-size:clamp(1.5em,4vw,2.4em);line-height:1.5">'+s.emoji+'</div>'+
+    '<p class="sub center" style="font-size:1.1em;font-weight:800;color:var(--ink)">'+s.q+'</p>'+
+    '<div style="text-align:center"><button class="speakbtn" onclick="speak(\''+s.q+'\',\'zh-CN\')">🔊</button></div>'+
+    '<div class="grid4">'+numOpts(s.ans).map(o=>'<button class="opt" style="font-size:1.4em" data-v="'+o+'" onclick="storyAns(this)">'+o+'</button>').join('')+'</div>';
+  speak(s.q,'zh-CN');
+}
+function storyAns(btn){
+  const s=storyCur;
+  if(+btn.dataset.v===s.ans){
+    correct(btn);
+    speak('太棒了！'+s.say,'zh-CN');
+    state.story.correct++;save();checkBadges();
+    if(state.story.correct%2===0)completeTask('t_story');
+    setTimeout(storyGame,1600);
+  }else wrong(btn,'再数一数哦');
+}
+
+/* ---- 人民币购物（数字王国）---- */
+let moneyCur=null;
+function moneyGame(){
+  const it=pick(SHOP_ITEMS);
+  if(Math.random()<.5){ /* 付钱找零 */
+    const pay=it.p<=5?10:20;
+    const ans=pay-it.p;
+    moneyCur={ans:ans};
+    $('numBox').innerHTML='<p class="sub center">买东西啦！算一算找回几元 👇</p>'+
+      '<div class="bigq" style="font-size:clamp(1.4em,3.8vw,2.2em);line-height:1.5">'+it.e+' '+it.n+'：'+it.p+' 元<br>付了 '+pay+' 元 💵，找回几元？</div>'+
+      '<div style="text-align:center"><button class="speakbtn" onclick="speak(\''+it.n+it.p+'元，付'+pay+'元，找回几元？\',\'zh-CN\')">🔊</button></div>'+
+      '<div class="grid4">'+numOpts(ans).map(o=>'<button class="opt" style="font-size:1.4em" data-v="'+o+'" onclick="moneyAns(this)">'+o+' 元</button>').join('')+'</div>';
+    speak(it.n+it.p+'元，付'+pay+'元，找回几元？','zh-CN');
+  }else{ /* 两件一共 */
+    const it2=pick(SHOP_ITEMS.filter(x=>x.n!==it.n));
+    const ans=it.p+it2.p;
+    moneyCur={ans:ans};
+    $('numBox').innerHTML='<p class="sub center">买两样东西，一共要几元？👇</p>'+
+      '<div class="bigq" style="font-size:clamp(1.4em,3.8vw,2.2em);line-height:1.5">'+it.e+' '+it.n+'：'+it.p+' 元<br>'+it2.e+' '+it2.n+'：'+it2.p+' 元</div>'+
+      '<div style="text-align:center"><button class="speakbtn" onclick="speak(\'买'+it.n+'和'+it2.n+'，一共要几元？\',\'zh-CN\')">🔊</button></div>'+
+      '<div class="grid4">'+numOpts(ans).map(o=>'<button class="opt" style="font-size:1.4em" data-v="'+o+'" onclick="moneyAns(this)">'+o+' 元</button>').join('')+'</div>';
+    speak('买'+it.n+'和'+it2.n+'，一共要几元？','zh-CN');
+  }
+}
+function moneyAns(btn){
+  if(+btn.dataset.v===moneyCur.ans){
+    correct(btn);
+    speak('答对啦！你真是个理财小能手！','zh-CN');
+    state.money.correct++;save();checkBadges();
+    setTimeout(moneyGame,1400);
+  }else wrong(btn,'再算一算哦');
+}
+
 /* ============ 古诗花园 ============ */
 renderer.poem=function(){
   $('view-poem').innerHTML='<div class="card"><div class="mtitle">📜 古诗花园</div>'+
@@ -1182,32 +1515,35 @@ function poemAns(btn,ch,o){
 /* ============ 逻辑小岛 ============ */
 let logicType='seq';
 renderer.logic=function(){
-  $('view-logic').innerHTML='<div class="card"><div class="mtitle">🧩 逻辑小岛</div><p class="sub">找规律、图形侦探、记忆翻牌，锻炼小脑瓜！</p>'+
+  $('view-logic').innerHTML='<div class="card"><div class="mtitle">🧩 逻辑小岛</div><p class="sub">找规律、图形侦探、排顺序、记忆翻牌，锻炼小脑瓜！</p>'+
     '<div class="seg" id="logicSeg">'+
       '<button data-t="seq" class="'+(logicType==='seq'?'on':'')+'" onclick="logicTab(\'seq\',this)">🔢 找规律</button>'+
       '<button data-t="odd" class="'+(logicType==='odd'?'on':'')+'" onclick="logicTab(\'odd\',this)">🕵️ 谁不一样</button>'+
+      '<button data-t="order" class="'+(logicType==='order'?'on':'')+'" onclick="logicTab(\'order\',this)">🔀 排顺序</button>'+
       '<button data-t="mem" class="'+(logicType==='mem'?'on':'')+'" onclick="logicTab(\'mem\',this)">🃏 记忆翻牌</button>'+
     '</div><div id="logicBox"></div></div>';
-  logicType==='seq'?logicSeq():logicType==='odd'?logicOdd():logicMem();
+  logicRun();
 };
+function logicRun(){logicType==='seq'?logicSeq():logicType==='odd'?logicOdd():logicType==='order'?orderGame():logicMem();}
 function logicTab(t,btn){
   logicType=t;
   document.querySelectorAll('#logicSeg button').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
-  t==='seq'?logicSeq():t==='odd'?logicOdd():logicMem();
+  logicRun();
 }
 function logicSeq(){
   const pats=[[2,4,6,8],[1,3,5,7],[5,10,15,20],[10,8,6,4],[3,6,9,12],[1,2,4,8]];
   const p=pick(pats),q=p[3];
+  seqCur=q;
   const opts=shuffle([q,q+1,q-1,q+2].filter((v,i,a)=>v>0&&a.indexOf(v)===i)).slice(0,4);
   if(!opts.includes(q))opts[0]=q,opts.sort(()=>Math.random()-.5);
   $('logicBox').innerHTML='<p class="sub center">找一找规律，下一个数是几？👇</p>'+
     '<div class="bigq" style="font-size:clamp(2.2em,6vw,3.6em);color:var(--accent5)">'+p[0]+' · '+p[1]+' · '+p[2]+' · ?</div>'+
     '<div class="grid4">'+opts.map(o=>'<button class="opt" data-v="'+o+'" onclick="logicAns(this)">'+o+'</button>').join('')+'</div>';
 }
+let seqCur=0; /* 当前找规律题的正确答案（存变量而非从 DOM 反解析，避免误判） */
 function logicAns(btn){
-  const q=$('logicBox').querySelector('.bigq').textContent.replace(/\?/,'').split('·').pop().trim();
-  if(+btn.dataset.v===+q){
+  if(+btn.dataset.v===seqCur){
     correct(btn);state.logic.correct++;save();checkBadges();
     if(state.logic.correct%3===0)completeTask('t_logic');
     setTimeout(logicSeq,700);
@@ -1230,6 +1566,35 @@ function logicOddAns(btn,ans){
     if(state.logic.correct%3===0)completeTask('t_logic');
     setTimeout(logicOdd,700);
   }else wrong(btn,'仔细看看每一个哦');
+}
+
+/* ---- 排顺序（逻辑小岛）---- */
+let orderCur=null;
+function orderGame(){
+  const set=pick(ORDER_SETS);
+  let arr=shuffle(set.seq.map((x,i)=>({e:x[0],n:x[1],i:i})));
+  if(arr.every((x,i)=>x.i===i))arr=[arr[1],arr[0]].concat(arr.slice(2));
+  orderCur={seq:set.seq,clicked:0};
+  $('logicBox').innerHTML='<p class="sub center">'+set.t+'：按正确顺序点一点 👇</p>'+
+    '<div class="grid4" style="max-width:30em">'+
+      arr.map(x=>'<button class="opt" style="font-size:1.1em;padding:1em .5em" data-i="'+x.i+'" onclick="orderAns(this)">'+x.e+'<br>'+x.n+'</button>').join('')+'</div>'+
+    '<p class="sub center" id="orderTip" style="margin-top:.7em;font-weight:800">先点第 1 个 👉</p>';
+  speak(set.t+'，按正确顺序点一点','zh-CN');
+}
+function orderAns(btn){
+  const o=orderCur;
+  if(+btn.dataset.i===o.clicked){
+    correct(btn);
+    btn.disabled=true;
+    o.clicked++;
+    $('orderTip').textContent=o.clicked<o.seq.length?('真棒！再点第 '+(o.clicked+1)+' 个 👉'):'全部正确！🎉';
+    if(o.clicked===o.seq.length){
+      speak('太棒了！'+o.seq.map(x=>x[1]).join('，'),'zh-CN');
+      state.order.win++;save();checkBadges();
+      if(state.order.win%2===0)completeTask('t_order');
+      setTimeout(orderGame,2200);
+    }
+  }else wrong(btn,'想一想哪个在前哦');
 }
 let memState=null;
 function logicMem(){
