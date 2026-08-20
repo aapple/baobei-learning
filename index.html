@@ -142,6 +142,7 @@ main{max-width:var(--maxw); margin:0 auto; padding:1.2em 1.2em 5em;}
 #zoomCard{background:var(--card); color:var(--ink); border-radius:2em; padding:clamp(1.4em,5vh,3em) clamp(1.4em,7vw,5em); box-shadow:0 14px 44px rgba(0,0,0,.32); text-align:center; cursor:pointer; animation:pop .2s ease-out; max-width:88vw;}
 #zoomCard .z-main{font-size:clamp(5.5em,32vh,19em); font-weight:900; line-height:1.15;}
 #zoomCard .z-sub{font-size:clamp(1.7em,6vh,3.2em); color:var(--ink2); font-weight:700; margin-top:.5em; line-height:1.7;}
+#zoomCard .z-img{width:clamp(2em,6vh,4em); height:auto; display:block; margin:0 auto; border-radius:.5em; padding:.5em; box-sizing:border-box;}
 
 /* 进度环 */
 .rings{display:flex; flex-wrap:wrap; gap:1em; justify-content:space-around; padding:.4em 0 .2em;}
@@ -283,6 +284,7 @@ main{max-width:var(--maxw); margin:0 auto; padding:1.2em 1.2em 5em;}
   <div class="view" id="view-idiom"></div>
   <div class="view" id="view-logic"></div>
   <div class="view" id="view-safe"></div>
+  <div class="view" id="view-sign"></div>
   <div class="view" id="view-badge"></div>
 </main>
 
@@ -525,6 +527,102 @@ const IDIOMS=[
   {id:'叶公好龙',e:'🧓🐉',m:'嘴上说喜欢龙，真龙来了却害怕，比喻表面喜欢其实不喜欢'}
 ];
 
+/* 公共场所标识全套（图标已下载到 images/signs/，来源 Material Design Icons，Apache 2.0）
+   cat: ban=禁止 warn=警告 safe=安全应急 fac=设施 gar=垃圾分类 road=交通 other=其他
+   dark:1 表示黄底标识，图标需变黑 */
+const SIGNS=[
+  /* 一、禁止标志：红色底 = 不可以做 */
+  {id:'nosmoke',icon:'smoking-off',bg:'#D9534F',cat:'ban',name:'禁止吸烟',desc:'香烟上画了一道红色的斜杠，这里不能抽烟，也可以提醒大人哦'},
+  {id:'nofire',icon:'fire-off',bg:'#D9534F',cat:'ban',name:'禁止烟火',desc:'火焰上画了红色斜杠，这里绝对不能见火，不然会着火很危险'},
+  {id:'noflame',icon:'candle',bg:'#D9534F',cat:'ban',name:'禁止明火',desc:'蜡烛火苗上画了斜杠，不能点火、不能玩火'},
+  {id:'notouch',icon:'hand-back-right-off',bg:'#D9534F',cat:'ban',name:'禁止触摸',desc:'手上画了红色斜杠，这个东西不能用手碰，可能有危险'},
+  {id:'noclimb',icon:'wall',bg:'#D9534F',cat:'ban',name:'禁止攀爬',desc:'不可以往上爬，高处很危险，摔下来会受伤'},
+  {id:'nocross',icon:'fence',bg:'#D9534F',cat:'ban',name:'禁止跨越',desc:'栏杆和围栏不能跨过去、不能钻过去，要走正确的路'},
+  {id:'norun',icon:'run-fast',bg:'#D9534F',cat:'ban',name:'禁止奔跑',desc:'奔跑的小人画了斜杠，这里不能跑，要慢慢走'},
+  {id:'noplay',icon:'karate',bg:'#D9534F',cat:'ban',name:'禁止追逐打闹',desc:'不能追跑打闹，打闹容易伤到自己，也会伤到别人'},
+  {id:'nospit',icon:'water',bg:'#D9534F',cat:'ban',name:'禁止随地吐痰',desc:'不可以吐口水，口水会传播细菌，不卫生也不文明'},
+  {id:'nolitter',icon:'delete-off',bg:'#D9534F',cat:'ban',name:'禁止乱扔垃圾',desc:'垃圾不能随手扔，要放进垃圾桶里'},
+  {id:'nofood',icon:'food-off',bg:'#D9534F',cat:'ban',name:'禁止饮食',desc:'这里不能吃东西也不能喝东西，比如博物馆和地铁里'},
+  {id:'nocam',icon:'camera-off',bg:'#D9534F',cat:'ban',name:'禁止拍照',desc:'这里不可以拍照哦，有的地方需要安静或者保护隐私'},
+  {id:'nopet',icon:'paw-off',bg:'#D9534F',cat:'ban',name:'禁止宠物入内',desc:'动物爪印上画了斜杠，小猫小狗不能带进来'},
+  {id:'nolean',icon:'wall',bg:'#D9534F',cat:'ban',name:'禁止倚靠',desc:'不能靠在上面，这个门或者墙会动，靠上去很危险'},
+  {id:'noout',icon:'bus',bg:'#D9534F',cat:'ban',name:'禁止头手伸出窗外',desc:'坐车时头和手不能伸出窗外，旁边有车会碰到的'},
+  /* 二、警告标志：黄色底 = 当心危险 */
+  {id:'wetfloor',icon:'walk',bg:'#F0B429',cat:'warn',dark:1,name:'小心地滑',desc:'地上有水会很滑，慢慢走，小心滑倒'},
+  {id:'lowhead',icon:'human-male-height',bg:'#F0B429',cat:'warn',dark:1,name:'小心碰头',desc:'头顶上的地方很低，小心头碰到，要低头走'},
+  {id:'pinch',icon:'scissors-cutting',bg:'#F0B429',cat:'warn',dark:1,name:'当心夹手',desc:'小心门和闸机夹到手，手不要放在门缝里'},
+  {id:'shock',icon:'flash-alert',bg:'#F0B429',cat:'warn',dark:1,name:'当心触电',desc:'这里有电，千万不能用手碰，电是很危险的'},
+  {id:'fall',icon:'arrow-down-bold',bg:'#F0B429',cat:'warn',dark:1,name:'当心坠落',desc:'小心从高处掉下去，扶好栏杆不打闹'},
+  {id:'trip',icon:'alert',bg:'#F0B429',cat:'warn',dark:1,name:'当心绊倒',desc:'地上可能有东西会绊脚，抬好小脚慢慢走'},
+  {id:'carwarn',icon:'car',bg:'#F0B429',cat:'warn',dark:1,name:'当心车辆',desc:'这里经常有车经过，走路要小心、多看看'},
+  {id:'pedwarn',icon:'walk',bg:'#F0B429',cat:'warn',dark:1,name:'注意行人',desc:'开车的人看到这个标志要减速，因为常有行人经过'},
+  {id:'children',icon:'school',bg:'#F0B429',cat:'warn',dark:1,name:'注意儿童',desc:'学校幼儿园附近有很多小朋友，车辆要慢行'},
+  {id:'stepwarn',icon:'stairs',bg:'#F0B429',cat:'warn',dark:1,name:'当心台阶',desc:'前面有台阶，一步一步慢慢走，不要拌倒'},
+  {id:'glass',icon:'window-open',bg:'#F0B429',cat:'warn',dark:1,name:'小心玻璃',desc:'前面有玻璃，小心别撞上，也不要去推'},
+  {id:'hot',icon:'thermometer-alert',bg:'#F0B429',cat:'warn',dark:1,name:'当心高温表面',desc:'这个表面很烫，不能用手摸，会烫伤的'},
+  /* 三、安全应急标志：绿色底 = 逃生和消防 */
+  {id:'exit',icon:'exit-run',bg:'#00A651',cat:'safe',name:'安全出口',desc:'绿色奔跑的小人指向逃生通道！遇到危险不要慌，跟着他快速跑到外面安全的地方'},
+  {id:'evac',icon:'sign-direction',bg:'#00A651',cat:'safe',name:'疏散方向',desc:'绿色箭头指向逃生的方向，紧急时朝箭头指的方向跑'},
+  {id:'door',icon:'door-open',bg:'#00A651',cat:'safe',name:'紧急出口',desc:'这里是紧急出去的门，遇到危险可以推开它跑出去'},
+  {id:'ext',icon:'fire-extinguisher',bg:'#00A651',cat:'safe',name:'灭火器',desc:'红色的大瓶子，是用来灭火的，看到小火要找大人用它帮忙'},
+  {id:'hyd',icon:'fire-hydrant',bg:'#00A651',cat:'safe',name:'消防栓',desc:'红色的水阀门，着火时消防员叔叔接水管用它灭火，平时不要在旁边玩'},
+  {id:'hose',icon:'water-pump',bg:'#00A651',cat:'safe',name:'消防水带',desc:'红色的箱子里装着水带，灭火时消防员接在消防栓上喷水'},
+  {id:'ephone',icon:'phone-alert',bg:'#00A651',cat:'safe',name:'应急电话',desc:'遇到紧急情况用来打电话求助的电话，按下按钮就能说话'},
+  {id:'aid',icon:'plus-box',bg:'#00A651',cat:'safe',name:'急救点',desc:'这里有药品和绷带，受伤了可以来这里找工作人员帮忙'},
+  {id:'shelter',icon:'tent',bg:'#00A651',cat:'safe',name:'应急避难场所',desc:'遇到紧急情况时躲避的大空地，比如公园和体育馆'},
+  /* 四、公共服务设施：蓝色底 = 可以找到的地方 */
+  {id:'male',icon:'human-male',bg:'#3B82C4',cat:'fac',name:'男卫生间',desc:'这是站着的小人，男孩子上厕所找这个牌子哦'},
+  {id:'female',icon:'human-female',bg:'#D96C8E',cat:'fac',name:'女卫生间',desc:'这是穿裙子的小人，女孩子上厕所找这个牌子哦'},
+  {id:'acctoilet',icon:'toilet',bg:'#3B82C4',cat:'fac',name:'无障碍卫生间',desc:'坐轮椅的人和行动不方便的人用的卫生间，里面更大还有扶手'},
+  {id:'acc',icon:'wheelchair-accessibility',bg:'#2F6FB2',cat:'fac',name:'无障碍通道',desc:'坐轮椅和行动不方便的人可以从这里走，我们要礼让哦'},
+  {id:'lift',icon:'elevator',bg:'#3B6FB5',cat:'fac',name:'电梯',desc:'能上上下下的小房间，按一下按钮就能到高层，在里面不要乱跳哦'},
+  {id:'esc',icon:'escalator',bg:'#4A7FC1',cat:'fac',name:'自动扶梯',desc:'会自己动的楼梯，扶好扶手站稳，不要奔跑打闹'},
+  {id:'stairs',icon:'stairs',bg:'#5889C7',cat:'fac',name:'步行楼梯',desc:'这里有楼梯，慢慢走、扶好扶手，不要推挤'},
+  {id:'info',icon:'information',bg:'#3B82C4',cat:'fac',name:'问询处',desc:'迷路了或者需要帮助，就来找问询处的工作人员'},
+  {id:'drink',icon:'cup-water',bg:'#3B82C4',cat:'fac',name:'饮水处',desc:'接水喝水的地方，带上自己的小水杯来接水吧'},
+  {id:'baby',icon:'baby',bg:'#B08BD0',cat:'fac',name:'母婴室',desc:'妈妈给小宝宝喂奶、换尿布的专用房间，安静又私密'},
+  {id:'luggage',icon:'bag-suitcase',bg:'#3B82C4',cat:'fac',name:'行李寄存',desc:'大包和箱子可以暂时存在这里，走的时候再取回来'},
+  {id:'lost',icon:'magnify',bg:'#3B82C4',cat:'fac',name:'失物招领',desc:'丢了东西来这里问一问，捡到东西的人会把东西放到这里'},
+  {id:'clinic',icon:'stethoscope',bg:'#3B82C4',cat:'fac',name:'医务室',desc:'学校公园里的医生处理小伤小病的地方'},
+  {id:'payphone',icon:'phone',bg:'#3B82C4',cat:'fac',name:'公用电话',desc:'任何人都可以使用的电话，和大人走散了可以借它打给家人'},
+  {id:'park',icon:'parking',bg:'#1E5FA8',cat:'fac',name:'停车场',desc:'大大的字母 P，表示这里是停车场，汽车停在这里休息'},
+  {id:'bikepark',icon:'bicycle',bg:'#3B82C4',cat:'fac',name:'自行车停放处',desc:'自行车要停在这里，排得整整齐齐'},
+  {id:'hosp',icon:'hospital-box',bg:'#3B82C4',cat:'fac',name:'医院',desc:'医生看病的地方，生病了来这里找医生，不要害怕'},
+  {id:'bus',icon:'bus-stop',bg:'#2E9E9B',cat:'fac',name:'公交车站',desc:'公交车在这里停靠，和大人一起排队上车'},
+  {id:'metro',icon:'subway-variant',bg:'#8B6FC0',cat:'fac',name:'地铁',desc:'坐地铁的地方，列车在地底下跑，超级快'},
+  {id:'bin',icon:'trash-can',bg:'#57A05A',cat:'fac',name:'垃圾桶',desc:'垃圾要丢进垃圾桶，不乱扔，爱护环境人人夸'},
+  /* 五、垃圾分类 */
+  {id:'recy',icon:'recycle',bg:'#3B82C4',cat:'gar',name:'可回收物',desc:'能回收的垃圾丢这里，塑料瓶和废纸都能变废为宝'},
+  {id:'foodgar',icon:'food-apple',bg:'#57A05A',cat:'gar',name:'厨余垃圾',desc:'剩饭剩菜、果皮菜叶，都丢进这个桶'},
+  {id:'hazgar',icon:'biohazard',bg:'#D9534F',cat:'gar',name:'有害垃圾',desc:'电池、过期药、灯泡管是有毒有害的，要单独放'},
+  {id:'othergar',icon:'trash-can',bg:'#8A9199',cat:'gar',name:'其他垃圾',desc:'不能回收也不有害的垃圾，丢进这个桶'},
+  /* 六、道路交通 */
+  {id:'cross',icon:'walk',bg:'#3B82C4',cat:'road',name:'人行横道',desc:'走在斑马线上的人，过马路要走斑马线，还要看红绿灯'},
+  {id:'walkonly',icon:'walk',bg:'#2E9E9B',cat:'road',name:'步行',desc:'这条路只能走路，汽车不可以进来'},
+  {id:'bike',icon:'bike-fast',bg:'#3B82C4',cat:'road',name:'非机动车道',desc:'自行车走的道路，小朋友不要在自行车道上走路'},
+  {id:'light',icon:'traffic-light',bg:'#3B82C4',cat:'road',name:'红绿灯',desc:'红灯停、绿灯行、黄灯亮了等一等，过马路一定要看红绿灯'},
+  {id:'noentry',icon:'minus-circle',bg:'#D9534F',cat:'road',name:'禁止通行',desc:'不可以从这里通过，车和人都不能进去'},
+  {id:'bridge',icon:'bridge',bg:'#3B82C4',cat:'road',name:'人行天桥',desc:'架在高高的桥上面过马路，走在上面很安全'},
+  {id:'underpass',icon:'tunnel',bg:'#3B82C4',cat:'road',name:'地下通道',desc:'从地底下穿过去的通道，走下楼梯就能安全过马路'},
+  {id:'stop',icon:'octagon',bg:'#D9534F',cat:'road',name:'停车让行',desc:'八边形的停字牌，车子必须完全停下来，看一看再走'},
+  /* 七、其他公共场所（公园、图书馆等） */
+  {id:'quiet',icon:'volume-off',bg:'#8B6FC0',cat:'other',name:'保持安静',desc:'图书馆和医院需要安静，说话要轻轻的小声一点'},
+  {id:'flowerg',icon:'flower',bg:'#57A05A',cat:'other',name:'爱护花草',desc:'小花小草也有生命，不要踩它们，也不要摘它们'},
+  {id:'view',icon:'binoculars',bg:'#2E9E9B',cat:'other',name:'观景台',desc:'看风景的好地方，站在这里能看到很远很美的景色'},
+  {id:'boat',icon:'ferry',bg:'#3B6FB5',cat:'other',name:'游船码头',desc:'游船停靠的地方，坐船游玩要来这里上船'},
+  {id:'wcdir',icon:'sign-direction',bg:'#3B82C4',cat:'other',name:'卫生间方向',desc:'箭头指着的方向，就是卫生间所在的方向'},
+  {id:'route',icon:'routes',bg:'#2E9E9B',cat:'other',name:'观光路线',desc:'跟着地图上的路线走，就能把好玩的地方都看一遍'}
+];
+const SIGN_CATS=[
+  {c:'ban',t:'🚫 禁止标志',d:'红色底加斜杠 = 不可以做的事'},
+  {c:'warn',t:'⚠️ 警告标志',d:'黄色底 = 当心，这里有危险'},
+  {c:'safe',t:'🟢 安全应急标志',d:'绿色底 = 逃生方向和消防设备'},
+  {c:'fac',t:'🔵 设施指示标志',d:'蓝色底 = 能找到的场所和服务'},
+  {c:'gar',t:'♻️ 垃圾分类',d:'垃圾要送回正确的家'},
+  {c:'road',t:'🚦 道路交通',d:'守规则，安全出行'},
+  {c:'other',t:'🌳 公园、图书馆等',d:'其他公共场所常见标识'}
+];
+
 const POEMS=[
  {t:'静夜思',a:'李白',lines:[
    [['床','chuáng'],['前','qián'],['明','míng'],['月','yuè'],['光','guāng']],
@@ -690,7 +788,7 @@ function freshState(){return{
   streak:{last:'',days:0},
   badges:{},
   letters:{matched:0}, hanzi:{correct:0}, pinyin:{correct:0}, clock:{correct:0},
-  story:{correct:0}, antonym:{correct:0}, measure:{correct:0}, money:{correct:0}, enword:{correct:0}, order:{win:0}, idiom:{correct:0},
+  story:{correct:0}, antonym:{correct:0}, measure:{correct:0}, money:{correct:0}, enword:{correct:0}, order:{win:0}, idiom:{correct:0}, sign:{correct:0},
   numbers:{addCorrect:0,countCorrect:0},
   poems:{read:{}},
   logic:{correct:0,memWin:0},
@@ -710,8 +808,9 @@ const TTS_TOKEN='6A5AA1D4EAFF4E9FB37E23D68491D6F4';
 const TTS_VER='1-143.0.3650.75';
 const IS_EDGE=/Edg\//.test(navigator.userAgent); /* 微软在线语音只认可 Edge 浏览器标识 */
 let ttsMode=localStorage.getItem('baobei_voice')||'F'; /* F 云朵姐姐 / M 阳光哥哥 / off 系统语音 */
-let edgeBroken=false, edgeFallbackToasted=false;
+let edgeBroken=false, edgeFallbackToasted=false, edgeFail=0;
 const ttsCache=new Map(); /* 内存层：key -> blob URL */
+const ttsInflight=new Map(); /* key -> 合成中的 Promise：同一文本并发请求合并，避免双击时连开多个 WebSocket 触发限流 */
 
 /* 持久层：IndexedDB 存合成好的 mp3，页面刷新后依然秒播 */
 const ttsDB={
@@ -898,8 +997,13 @@ async function speak(text,lang){
         let blob=null;
         const rec=await ttsDB.get(key);            /* 1) 查持久缓存 */
         if(rec&&rec.blob)blob=rec.blob;
-        if(!blob){                                   /* 2) 在线合成并写回持久层 */
-          blob=await edgeSpeak(text,voice);
+        if(!blob){                                   /* 2) 在线合成（并发去重 + 失败重试一次） */
+          let p=ttsInflight.get(key);
+          if(!p){
+            p=edgeSpeak(text,voice).catch(()=>edgeSpeak(text,voice)).finally(()=>ttsInflight.delete(key));
+            ttsInflight.set(key,p);
+          }
+          blob=await p;
           ttsDB.put(key,blob);
           if(++ttsDB.putCount%25===0)ttsDB.trim(400);
         }
@@ -908,13 +1012,18 @@ async function speak(text,lang){
         ttsCache.set(key,url);
       }
       if(seq!==speakSeq)return; /* 期间已有新的朗读请求 */
-      curAudio=new Audio(url);
+      curAudio=new Audio(url);curAudio._key=key;
       await curAudio.play();
+      edgeFail=0;
       return;
     }catch(e){
-      edgeBroken=true;
-      if(!edgeFallbackToasted){edgeFallbackToasted=true;
-        toast(IS_EDGE?'在线语音暂不可用，已切换系统语音':'真人语音需用 Edge 浏览器打开，已暂时切换系统语音');}
+      edgeFail++;
+      if(edgeFail>=2){ /* 连续失败才降级，且 60 秒后自动尝试恢复真人语音 */
+        edgeBroken=true;
+        if(!edgeFallbackToasted){edgeFallbackToasted=true;
+          toast(IS_EDGE?'在线语音暂不可用，已切换系统语音':'真人语音需用 Edge 浏览器打开，已暂时切换系统语音');}
+        setTimeout(()=>{edgeBroken=false;edgeFail=0;},60000);
+      }
       console.warn('Edge TTS 降级：',e&&e.message);
     }
   }
@@ -961,6 +1070,8 @@ function bumpCombo(){
 function resetCombo(){$('comboBox').style.display='none';$('comboCount').textContent='0';state.combo=0;save();}
 /* 答对统一入口：处理音效/星星/连击 */
 function correct(btn,stars,x,y){
+  if(btn.dataset.done)return 0; /* 同一选项防连点：只计分一次 */
+  btn.dataset.done='1';
   btn.classList.add('ok');sndOK();
   const r=btn.getBoundingClientRect();
   const c=bumpCombo();
@@ -1019,6 +1130,7 @@ const BADGES=[
   {id:'memory',ic:'🃏',name:'记忆小超人',desc:'赢 1 次翻牌游戏',cond:s=>s.logic.memWin>=1},
   {id:'logic',ic:'🧩',name:'逻辑小博士',desc:'逻辑题答对 10 题',cond:s=>s.logic.correct>=10},
   {id:'safe',ic:'🛡️',name:'安全小卫士',desc:'安全问答答对 5 题',cond:s=>s.safety.correct>=5},
+  {id:'sign',ic:'🚸',name:'标识小达人',desc:'公共标识答对 8 题',cond:s=>s.sign.correct>=8},
   {id:'combo',ic:'🔥',name:'连击之王',desc:'达成 5 连击',cond:s=>s.comboBest>=5},
   {id:'streak',ic:'📅',name:'全勤宝贝',desc:'连续 3 天来学习',cond:s=>s.streak.days>=3},
   {id:'fifty',ic:'🏆',name:'五十星冠军',desc:'累计 50 颗星星',cond:s=>s.stars>=50}
@@ -1053,7 +1165,8 @@ const TASK_POOL=[
   {id:'t_poem',ic:'📜',name:'朗读 1 首古诗',hint:'去古诗花园点一首诗'},
   {id:'t_idiom',ic:'🏮',name:'成语答对 2 题',hint:'去成语学堂猜成语'},
   {id:'t_logic',ic:'🧩',name:'逻辑答对 3 题',hint:'去逻辑小岛挑战'},
-  {id:'t_safe',ic:'🛡️',name:'学会 1 条安全知识',hint:'去安全课堂答题'}
+  {id:'t_safe',ic:'🛡️',name:'学会 1 条安全知识',hint:'去安全课堂答题'},
+  {id:'t_sign',ic:'🚸',name:'标识答对 2 题',hint:'去公共标识站找标识'}
 ];
 function ensureDaily(){
   const t=todayStr();
@@ -1085,6 +1198,7 @@ const MODULES=[
   {id:'idiom',name:'🏮 成语学堂',color:'#D4A05A'},
   {id:'logic',name:'🧩 逻辑小岛',color:'#9B8CE0'},
   {id:'safe',name:'🛡️ 安全课堂',color:'#E886B0'},
+  {id:'sign',name:'🚸 公共标识站',color:'#2E9E9B'},
   {id:'badge',name:'🏅 我的成就',color:'#F2A649'}
 ];
 function buildTabs(){
@@ -1111,7 +1225,8 @@ renderer.home=function(){
     poem:Math.round(Object.keys(s.poems.read).length/24*100),
         idiom:Math.min(100,s.idiom.correct*5),
     logic:Math.min(100,(s.logic.correct+s.logic.memWin*5+s.order.win*10)*4),
-    safe:Math.min(100,s.safety.correct*20)
+    safe:Math.min(100,s.safety.correct*20),
+    sign:Math.min(100,s.sign.correct*6)
   };
   const ring=(val,color,lab)=>{
     const r=26,c=2*Math.PI*r,off=c*(1-val/100);
@@ -1142,7 +1257,7 @@ renderer.home=function(){
     '</div></div>'+
     '<div class="card"><div class="mtitle">🌱 学习进度</div><div class="rings">'+
       ring(prog.abc,'#6FA8DC','字母')+ring(prog.hanzi,'#E886B0','识字')+ring(prog.pinyin,'#B08BD0','拼音')+ring(prog.num,'#F2A649','数学')+
-      ring(prog.poem,'#7BB661','古诗')+ring(prog.idiom,'#D4A05A','成语')+ring(prog.logic,'#9B8CE0','逻辑')+ring(prog.safe,'#E886B0','安全')+
+      ring(prog.poem,'#7BB661','古诗')+ring(prog.idiom,'#D4A05A','成语')+ring(prog.logic,'#9B8CE0','逻辑')+ring(prog.safe,'#E886B0','安全')+ring(prog.sign,'#2E9E9B','标识')+
     '</div></div>'+
     '<div class="card"><div class="mtitle">🏅 成就徽章墙</div><p class="sub">已解锁 '+Object.keys(s.badges).length+' / '+BADGES.length+' 枚徽章</p>'+
       badgeWallHTML()+'<div class="btnrow"><button class="btn orange" onclick="go(\'badge\')">查看我的成就</button></div></div>';
@@ -1621,7 +1736,8 @@ function showZoom(main,sub,voice,lang,style){
   const ov=document.createElement('div');ov.id='zoomOverlay';
   ov.innerHTML='<div id="zoomCard"><div class="z-main"'+(style?' style="'+style+'"':'')+'>'+main+'</div>'+(sub?'<div class="z-sub">'+sub+'</div>':'')+'</div>';
   document.body.appendChild(ov);
-  if(zoomVoice)speak(zoomVoice.t,zoomVoice.l);
+  /* 双击弹窗前刚播过同一句就不再重复，减少连发请求；点卡片仍正常播放 */
+  if(zoomVoice&&!(curAudio&&!curAudio.paused&&curAudio._key===zoomVoice.t+'|'+pickVoice(zoomVoice.l)))speak(zoomVoice.t,zoomVoice.l);
 }
 function closeZoom(){const o=document.getElementById('zoomOverlay');if(o)o.remove();zoomVoice=null;}
 document.addEventListener('dblclick',e=>{
@@ -1698,6 +1814,41 @@ function idiomFillAns(btn){
     if(state.idiom.correct%3===0)completeTask('t_idiom');
     setTimeout(idiomFill,2600);
   }else wrong(btn,'再想一想哦');
+}
+
+/* ============ 公共标识站 ============ */
+let signCur=null;
+function signTile(s){
+  const dark=s.dark?';filter:brightness(0)':'';
+  return '<button class="tile" style="background:'+s.bg+(s.dark?';color:#6B5300':'')+'" onclick="speak(\''+s.name+'。'+s.desc+'\',\'zh-CN\')" data-zoom="<img src=\'images/signs/'+s.icon+'.svg\' class=\'z-img\' style=\'background:'+s.bg+dark+'\'>" data-zsub="'+s.name+'<br>'+s.desc+'" data-zvoice="'+s.name+'。'+s.desc+'">'+
+    '<img src="images/signs/'+s.icon+'.svg" style="width:2.6em;height:2.6em'+dark+'" alt="'+s.name+'"><span class="t-ch" style="font-size:.85em;margin-top:.3em">'+s.name+'</span></button>';
+}
+renderer.sign=function(){
+  $('view-sign').innerHTML='<div class="card">'+
+    '<div class="mtitle">🚸 公共标识站</div>'+
+    '<p class="sub">先记住颜色规则：🔴 红底斜杠 = 不可以做 · 🟡 黄底 = 当心危险 · 🟢 绿底 = 安全逃生 · 🔵 蓝底 = 设施指示。点标识听含义，双击放大仔细看！</p>'+
+    SIGN_CATS.map(cat=>'<p class="sub" style="margin:1.1em 0 .5em;font-weight:800;color:var(--ink)">'+cat.t+' <span style="font-weight:600;color:var(--ink2)">'+cat.d+'</span></p>'+
+      '<div class="tilegrid">'+SIGNS.filter(s=>s.cat===cat.c).map(signTile).join('')+'</div>').join('')+
+    '<div class="btnrow"><button class="btn blue" onclick="signGame()">🔍 玩找标识</button></div>'+
+    '<div id="signBox"></div></div>';
+};
+function signGame(){
+  signCur=pick(SIGNS);
+  const others=shuffle(SIGNS.filter(x=>x.id!==signCur.id)).slice(0,3);
+  const opts=shuffle([signCur].concat(others));
+  $('signBox').innerHTML='<div class="card" style="margin-top:1em"><p class="sub center">听一听、读一读，找到正确的标识 👇</p>'+
+    '<div class="bigq" style="font-size:1.25em">'+signCur.desc+'</div>'+
+    '<div class="grid4">'+opts.map(o=>'<button class="opt" style="background:'+o.bg+';color:'+(o.dark?'#6B5300':'#fff')+';padding:.8em" data-id="'+o.id+'" onclick="signAns(this)"><img src="images/signs/'+o.icon+'.svg" style="width:3.2em;height:3.2em;display:block;margin:0 auto'+(o.dark?';filter:brightness(0)':'')+'"><span style="display:block;margin-top:.4em;font-weight:800">'+o.name+'</span></button>').join('')+'</div></div>';
+  speak('听一听，找到正确的标识。'+signCur.desc,'zh-CN');
+}
+function signAns(btn){
+  if(btn.dataset.id===signCur.id){
+    correct(btn);
+    speak('答对啦！这是'+signCur.name+'。'+signCur.desc,'zh-CN');
+    state.sign.correct++;save();checkBadges();
+    if(state.sign.correct%3===0)completeTask('t_sign');
+    setTimeout(signGame,2800);
+  }else wrong(btn,'再看一看哦');
 }
 
 /* ============ 逻辑小岛 ============ */
@@ -1846,13 +1997,12 @@ function safeRender(){
 function safeAns(btn,i){
   const q=SAFETY[safeIdx];
   if(i===q.ans){
+    if(state.safety.answered[safeIdx]){speak(q.tip,'zh-CN');return;} /* 已学会的题：重听提示，不重复计分 */
     correct(btn,2);
     $('safeTip').classList.add('show');
     speak('答对啦！'+q.tip,'zh-CN');
-    if(!state.safety.answered[safeIdx]){
-      state.safety.answered[safeIdx]=true;
-      state.safety.correct++;save();checkBadges();completeTask('t_safe');
-    }
+    state.safety.answered[safeIdx]=true;
+    state.safety.correct++;save();checkBadges();completeTask('t_safe');
   }else{
     wrong(btn);
     $('safeTip').classList.add('show');
@@ -2000,7 +2150,7 @@ document.querySelectorAll('#voicePick button').forEach(b=>{
   b.classList.toggle('on',b.dataset.v===ttsMode);
   b.onclick=()=>{
     ttsMode=b.dataset.v;localStorage.setItem('baobei_voice',ttsMode);
-    if(ttsMode!=='off'){edgeBroken=false;edgeFallbackToasted=false;}
+    if(ttsMode!=='off'){edgeBroken=false;edgeFallbackToasted=false;edgeFail=0;}
     document.querySelectorAll('#voicePick button').forEach(x=>x.classList.toggle('on',x===b));
     stopSpeak();speak('你好呀，我是你的学习小伙伴，我们一起加油吧！','zh-CN');
   };
