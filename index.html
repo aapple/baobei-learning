@@ -274,6 +274,7 @@ main{max-width:var(--maxw); margin:0 auto; padding:1.2em 1.2em 5em;}
   <div class="view" id="view-hanzi"></div>
   <div class="view" id="view-num"></div>
   <div class="view" id="view-poem"></div>
+  <div class="view" id="view-idiom"></div>
   <div class="view" id="view-logic"></div>
   <div class="view" id="view-safe"></div>
   <div class="view" id="view-badge"></div>
@@ -361,7 +362,23 @@ const WORDS=[ /* 看图识字：常用字 + 词 + emoji */
   {ch:'校',py:'xiào',word:'学校',emoji:'🏫'},{ch:'饭',py:'fàn',word:'吃饭',emoji:'🥣'},
   {ch:'笔',py:'bǐ',word:'写字',emoji:'🖌️'},
   {ch:'多',py:'duō',word:'很多',emoji:'➕'},
-  {ch:'少',py:'shǎo',word:'很少',emoji:'➖'}
+  {ch:'少',py:'shǎo',word:'很少',emoji:'➖'},
+  /* 常用字再扩充（人物、四季、颜色、动作） */
+  {ch:'早',py:'zǎo',word:'早晨',emoji:'🌅'},{ch:'晚',py:'wǎn',word:'晚上',emoji:'🌃'},
+  {ch:'年',py:'nián',word:'过年',emoji:'🎆'},{ch:'男',py:'nán',word:'男孩',emoji:'👦'},
+  {ch:'女',py:'nǚ',word:'女孩',emoji:'👧'},{ch:'爸',py:'bà',word:'爸爸',emoji:'👨'},
+  {ch:'妈',py:'mā',word:'妈妈',emoji:'👩'},{ch:'爷',py:'yé',word:'爷爷',emoji:'👴'},
+  {ch:'奶',py:'nǎi',word:'奶奶',emoji:'👵'},{ch:'哥',py:'gē',word:'哥哥',emoji:'🧒'},
+  {ch:'弟',py:'dì',word:'弟弟',emoji:'👶'},{ch:'老',py:'lǎo',word:'老人',emoji:'🧓'},
+  {ch:'师',py:'shī',word:'老师',emoji:'👩‍🏫'},{ch:'友',py:'yǒu',word:'朋友',emoji:'🤝'},
+  {ch:'春',py:'chūn',word:'春天',emoji:'🌱'},{ch:'夏',py:'xià',word:'夏天',emoji:'🌞'},
+  {ch:'秋',py:'qiū',word:'秋天',emoji:'🍂'},{ch:'冬',py:'dōng',word:'冬天',emoji:'⛄'},
+  {ch:'红',py:'hóng',word:'红色',emoji:'🔴'},{ch:'黄',py:'huáng',word:'黄色',emoji:'🟡'},
+  {ch:'蓝',py:'lán',word:'蓝色',emoji:'🔵'},{ch:'绿',py:'lǜ',word:'绿色',emoji:'🟢'},
+  {ch:'白',py:'bái',word:'白色',emoji:'⚪'},{ch:'黑',py:'hēi',word:'黑色',emoji:'⚫'},
+  {ch:'圆',py:'yuán',word:'圆形',emoji:'⭕'},{ch:'笑',py:'xiào',word:'笑脸',emoji:'😊'},
+  {ch:'哭',py:'kū',word:'哭鼻子',emoji:'😭'},{ch:'吃',py:'chī',word:'吃饭',emoji:'🍽️'},
+  {ch:'走',py:'zǒu',word:'走路',emoji:'🚶'},{ch:'飞',py:'fēi',word:'飞翔',emoji:'🕊️'}
 ];
 
 /* 拼音（幼小衔接核心）：p=卡片字母 r=朗读呼读音 */
@@ -468,6 +485,40 @@ const ORDER_SETS=[
   {t:'慢慢长大',seq:[['👶','小宝宝'],['🧒','小朋友'],['👨','大人'],['👴','老爷爷']]}
 ];
 
+/* 成语（幼小衔接）：id=成语 e=图卡 m=白话释义 */
+const IDIOMS=[
+  {id:'守株待兔',e:'🌳🐰',m:'守在树旁等兔子撞上来，比喻不努力、只想碰运气'},
+  {id:'画蛇添足',e:'🐍✏️',m:'蛇画好了又给它添上脚，比喻做多余的事反而坏事'},
+  {id:'亡羊补牢',e:'🐑🔧',m:'羊丢了赶紧修羊圈，比喻出了问题及时改正还不晚'},
+  {id:'拔苗助长',e:'🌱⬆️',m:'把禾苗拔高想让它长快，比喻急于求成反而坏事'},
+  {id:'掩耳盗铃',e:'🙊🔔',m:'捂住自己的耳朵去偷铃铛，比喻自己骗自己'},
+  {id:'狐假虎威',e:'🦊🐯',m:'狐狸借老虎的威风吓唬别的动物，比喻借别人的势力欺负人'},
+  {id:'井底之蛙',e:'🕳️🐸',m:'井底的青蛙只看见一小块天，比喻见识少的人'},
+  {id:'对牛弹琴',e:'🐮🎹',m:'对着牛弹琴，比喻对不懂的人白费口舌'},
+  {id:'画龙点睛',e:'🐉👁️',m:'画龙最后点上眼睛，比喻关键的一笔让整体更精彩'},
+  {id:'一石二鸟',e:'🪨🐦🐦',m:'用一块石头打到两只鸟，比喻做一件事有两个收获'},
+  {id:'三心二意',e:'💔💭',m:'一会儿想这一会儿想那，形容不专心'},
+  {id:'一心一意',e:'❤️',m:'非常专心，只想做好一件事'},
+  {id:'七上八下',e:'7️⃣⬆️8️⃣⬇️',m:'心里慌慌的不安，七上八下的'},
+  {id:'九牛一毛',e:'🐂🐂🐂',m:'九头牛身上的一根毛，形容非常少的一点点'},
+  {id:'十全十美',e:'🔟✨',m:'各个方面都完美，形容非常好、没有缺点'},
+  {id:'五颜六色',e:'🌈',m:'形容颜色多又好看'},
+  {id:'大惊小怪',e:'😱❗',m:'遇到一点点小事就大呼小叫'},
+  {id:'半途而废',e:'🏃⏹️',m:'事情做到一半就放弃，没有坚持到底'},
+  {id:'熟能生巧',e:'🎯',m:'练得多就做得巧，熟练了就能找到窍门'},
+  {id:'水滴石穿',e:'💧🪨',m:'水滴久了能滴穿石头，比喻坚持就能成功'},
+  {id:'春暖花开',e:'🌷☀️',m:'春天暖和花儿开放，形容美好的春光'},
+  {id:'雪中送炭',e:'❄️🧺',m:'下雪天给人送炭取暖，比喻在别人困难时帮忙'},
+  {id:'狼吞虎咽',e:'🐯🍽️',m:'像狼和老虎一样大口吃，形容吃得很急'},
+  {id:'虎头蛇尾',e:'🐯🐍',m:'头大尾小，比喻做事开头认真、结尾马虎'},
+  {id:'马到成功',e:'🐴🏆',m:'战马一到就胜利，形容很快取得成功'},
+  {id:'鸡飞狗跳',e:'🐔🐕',m:'鸡飞起来狗乱跳，形容乱成一团'},
+  {id:'闻鸡起舞',e:'🐔💪',m:'听到鸡叫就起来练功，形容勤奋努力'},
+  {id:'走马观花',e:'🐴🌸',m:'骑在马上看花，比喻粗略地看一看'},
+  {id:'刻舟求剑',e:'⛵⚔️',m:'在船上刻记号找掉进水里的剑，比喻不懂变通'},
+  {id:'叶公好龙',e:'🧓🐉',m:'嘴上说喜欢龙，真龙来了却害怕，比喻表面喜欢其实不喜欢'}
+];
+
 const POEMS=[
  {t:'静夜思',a:'李白',lines:[
    [['床','chuáng'],['前','qián'],['明','míng'],['月','yuè'],['光','guāng']],
@@ -545,7 +596,47 @@ const POEMS=[
    [['头','tóu'],['上','shàng'],['红','hóng'],['冠','guān'],['不','bù'],['用','yòng'],['裁','cái']],
    [['满','mǎn'],['身','shēn'],['雪','xuě'],['白','bái'],['走','zǒu'],['将','jiāng'],['来','lái']],
    [['平','píng'],['生','shēng'],['不','bù'],['敢','gǎn'],['轻','qīng'],['言','yán'],['语','yǔ']],
-   [['一','yí'],['叫','jiào'],['千','qiān'],['门','mén'],['万','wàn'],['户','hù'],['开','kāi']]]}
+   [['一','yí'],['叫','jiào'],['千','qiān'],['门','mén'],['万','wàn'],['户','hù'],['开','kāi']]]},
+{t:'咏柳',a:'贺知章',lines:[
+   [['碧','bì'],['玉','yù'],['妆','zhuāng'],['成','chéng'],['一','yí'],['树','shù'],['高','gāo']],
+   [['万','wàn'],['条','tiáo'],['垂','chuí'],['下','xià'],['绿','lǜ'],['丝','sī'],['绦','tāo']],
+   [['不','bù'],['知','zhī'],['细','xì'],['叶','yè'],['谁','shéi'],['裁','cái'],['出','chū']],
+   [['二','èr'],['月','yuè'],['春','chūn'],['风','fēng'],['似','sì'],['剪','jiǎn'],['刀','dāo']]]},
+{t:'绝句',a:'杜甫',lines:[
+   [['两','liǎng'],['个','gè'],['黄','huáng'],['鹂','lí'],['鸣','míng'],['翠','cuì'],['柳','liǔ']],
+   [['一','yí'],['行','háng'],['白','bái'],['鹭','lù'],['上','shàng'],['青','qīng'],['天','tiān']],
+   [['窗','chuāng'],['含','hán'],['西','xī'],['岭','lǐng'],['千','qiān'],['秋','qiū'],['雪','xuě']],
+   [['门','mén'],['泊','bó'],['东','dōng'],['吴','wú'],['万','wàn'],['里','lǐ'],['船','chuán']]]},
+{t:'望庐山瀑布',a:'李白',lines:[
+   [['日','rì'],['照','zhào'],['香','xiāng'],['炉','lú'],['生','shēng'],['紫','zǐ'],['烟','yān']],
+   [['遥','yáo'],['看','kàn'],['瀑','pù'],['布','bù'],['挂','guà'],['前','qián'],['川','chuān']],
+   [['飞','fēi'],['流','liú'],['直','zhí'],['下','xià'],['三','sān'],['千','qiān'],['尺','chǐ']],
+   [['疑','yí'],['是','shì'],['银','yín'],['河','hé'],['落','luò'],['九','jiǔ'],['天','tiān']]]},
+{t:'赠汪伦',a:'李白',lines:[
+   [['李','lǐ'],['白','bái'],['乘','chéng'],['舟','zhōu'],['将','jiāng'],['欲','yù'],['行','xíng']],
+   [['忽','hū'],['闻','wén'],['岸','àn'],['上','shàng'],['踏','tà'],['歌','gē'],['声','shēng']],
+   [['桃','táo'],['花','huā'],['潭','tán'],['水','shuǐ'],['深','shēn'],['千','qiān'],['尺','chǐ']],
+   [['不','bù'],['及','jí'],['汪','wāng'],['伦','lún'],['送','sòng'],['我','wǒ'],['情','qíng']]]},
+{t:'江雪',a:'柳宗元',lines:[
+   [['千','qiān'],['山','shān'],['鸟','niǎo'],['飞','fēi'],['绝','jué']],
+   [['万','wàn'],['径','jìng'],['人','rén'],['踪','zōng'],['灭','miè']],
+   [['孤','gū'],['舟','zhōu'],['蓑','suō'],['笠','lì'],['翁','wēng']],
+   [['独','dú'],['钓','diào'],['寒','hán'],['江','jiāng'],['雪','xuě']]]},
+{t:'梅花',a:'王安石',lines:[
+   [['墙','qiáng'],['角','jiǎo'],['数','shù'],['枝','zhī'],['梅','méi']],
+   [['凌','líng'],['寒','hán'],['独','dú'],['自','zì'],['开','kāi']],
+   [['遥','yáo'],['知','zhī'],['不','bù'],['是','shì'],['雪','xuě']],
+   [['为','wèi'],['有','yǒu'],['暗','àn'],['香','xiāng'],['来','lái']]]},
+{t:'草',a:'白居易',lines:[
+   [['离','lí'],['离','lí'],['原','yuán'],['上','shàng'],['草','cǎo']],
+   [['一','yí'],['岁','suì'],['一','yì'],['枯','kū'],['荣','róng']],
+   [['野','yě'],['火','huǒ'],['烧','shāo'],['不','bù'],['尽','jìn']],
+   [['春','chūn'],['风','fēng'],['吹','chuī'],['又','yòu'],['生','shēng']]]},
+{t:'村居',a:'高鼎',lines:[
+   [['草','cǎo'],['长','zhǎng'],['莺','yīng'],['飞','fēi'],['二','èr'],['月','yuè'],['天','tiān']],
+   [['拂','fú'],['堤','dī'],['杨','yáng'],['柳','liǔ'],['醉','zuì'],['春','chūn'],['烟','yān']],
+   [['儿','ér'],['童','tóng'],['散','sàn'],['学','xué'],['归','guī'],['来','lái'],['早','zǎo']],
+   [['忙','máng'],['趁','chèn'],['东','dōng'],['风','fēng'],['放','fàng'],['纸','zhǐ'],['鸢','yuān']]]}
 ];
 
 const SAFETY=[ /* 生活与安全常识 */
@@ -593,7 +684,7 @@ function freshState(){return{
   streak:{last:'',days:0},
   badges:{},
   letters:{matched:0}, hanzi:{correct:0}, pinyin:{correct:0}, clock:{correct:0},
-  story:{correct:0}, antonym:{correct:0}, measure:{correct:0}, money:{correct:0}, enword:{correct:0}, order:{win:0},
+  story:{correct:0}, antonym:{correct:0}, measure:{correct:0}, money:{correct:0}, enword:{correct:0}, order:{win:0}, idiom:{correct:0},
   numbers:{addCorrect:0,countCorrect:0},
   poems:{read:{}},
   logic:{correct:0,memWin:0},
@@ -917,7 +1008,8 @@ const BADGES=[
   {id:'order',ic:'🔀',name:'排序小能手',desc:'排序挑战成功 3 次',cond:s=>s.order.win>=3},
   {id:'math',ic:'🧮',name:'数学小天才',desc:'算术答对 10 题',cond:s=>s.numbers.addCorrect>=10},
   {id:'count',ic:'🍎',name:'数数小能手',desc:'数数答对 10 题',cond:s=>s.numbers.countCorrect>=10},
-  {id:'poem',ic:'📜',name:'古诗小状元',desc:'朗读全部 16 首古诗',cond:s=>Object.keys(s.poems.read).length>=16},
+  {id:'poem',ic:'📜',name:'古诗小状元',desc:'朗读全部 24 首古诗',cond:s=>Object.keys(s.poems.read).length>=24},
+    {id:'idiom',ic:'🏮',name:'成语小秀才',desc:'成语题答对 10 题',cond:s=>s.idiom.correct>=10},
   {id:'memory',ic:'🃏',name:'记忆小超人',desc:'赢 1 次翻牌游戏',cond:s=>s.logic.memWin>=1},
   {id:'logic',ic:'🧩',name:'逻辑小博士',desc:'逻辑题答对 10 题',cond:s=>s.logic.correct>=10},
   {id:'safe',ic:'🛡️',name:'安全小卫士',desc:'安全问答答对 5 题',cond:s=>s.safety.correct>=5},
@@ -953,6 +1045,7 @@ const TASK_POOL=[
   {id:'t_order',ic:'🔀',name:'完成 1 次排序',hint:'去逻辑小岛排顺序'},
   {id:'t_math',ic:'🧮',name:'算术答对 3 题',hint:'去数字王国做算术'},
   {id:'t_poem',ic:'📜',name:'朗读 1 首古诗',hint:'去古诗花园点一首诗'},
+  {id:'t_idiom',ic:'🏮',name:'成语答对 2 题',hint:'去成语学堂猜成语'},
   {id:'t_logic',ic:'🧩',name:'逻辑答对 3 题',hint:'去逻辑小岛挑战'},
   {id:'t_safe',ic:'🛡️',name:'学会 1 条安全知识',hint:'去安全课堂答题'}
 ];
@@ -983,6 +1076,7 @@ const MODULES=[
   {id:'hanzi',name:'📖 汉字城堡',color:'#E886B0'},
   {id:'num',name:'🧮 数字王国',color:'#F2A649'},
   {id:'poem',name:'📜 古诗花园',color:'#7BB661'},
+  {id:'idiom',name:'🏮 成语学堂',color:'#D4A05A'},
   {id:'logic',name:'🧩 逻辑小岛',color:'#9B8CE0'},
   {id:'safe',name:'🛡️ 安全课堂',color:'#E886B0'},
   {id:'badge',name:'🏅 我的成就',color:'#F2A649'}
@@ -1008,7 +1102,8 @@ renderer.home=function(){
     abc:Math.min(100,(s.letters.matched*20+s.enword.correct*4)), hanzi:Math.min(100,(s.hanzi.correct+s.antonym.correct+s.measure.correct)*3),
     pinyin:Math.min(100,s.pinyin.correct*5),
     num:Math.min(100,(s.numbers.addCorrect+s.numbers.countCorrect+s.clock.correct+s.story.correct+s.money.correct)*2),
-    poem:Math.round(Object.keys(s.poems.read).length/16*100),
+    poem:Math.round(Object.keys(s.poems.read).length/24*100),
+        idiom:Math.min(100,s.idiom.correct*5),
     logic:Math.min(100,(s.logic.correct+s.logic.memWin*5+s.order.win*10)*4),
     safe:Math.min(100,s.safety.correct*20)
   };
@@ -1041,7 +1136,7 @@ renderer.home=function(){
     '</div></div>'+
     '<div class="card"><div class="mtitle">🌱 学习进度</div><div class="rings">'+
       ring(prog.abc,'#6FA8DC','字母')+ring(prog.hanzi,'#E886B0','识字')+ring(prog.pinyin,'#B08BD0','拼音')+ring(prog.num,'#F2A649','数学')+
-      ring(prog.poem,'#7BB661','古诗')+ring(prog.logic,'#9B8CE0','逻辑')+ring(prog.safe,'#E886B0','安全')+
+      ring(prog.poem,'#7BB661','古诗')+ring(prog.idiom,'#D4A05A','成语')+ring(prog.logic,'#9B8CE0','逻辑')+ring(prog.safe,'#E886B0','安全')+
     '</div></div>'+
     '<div class="card"><div class="mtitle">🏅 成就徽章墙</div><p class="sub">已解锁 '+Object.keys(s.badges).length+' / '+BADGES.length+' 枚徽章</p>'+
       badgeWallHTML()+'<div class="btnrow"><button class="btn orange" onclick="go(\'badge\')">查看我的成就</button></div></div>';
@@ -1509,6 +1604,70 @@ function poemAns(btn,ch,o){
     speak('答对啦，真棒！','zh-CN');
     completeTask('t_poem');
     setTimeout(poemGame,900);
+  }else wrong(btn,'再想一想哦');
+}
+
+/* ============ 成语学堂 ============ */
+let idiomCur=null;
+renderer.idiom=function(){
+  $('view-idiom').innerHTML='<div class="card">'+
+    '<div class="mtitle">🏮 成语学堂</div>'+
+    '<p class="sub">点成语卡听意思；玩「猜成语」和「成语补字」，变身成语小秀才！</p>'+
+    '<div class="tilegrid">'+IDIOMS.map((x,i)=>
+      '<button class="tile" style="background:'+LCOLOR[i%5]+'" onclick="speak(\''+x.id+'。'+x.m+'\',\'zh-CN\')">'+
+      '<span class="t-emoji">'+x.e+'</span><span class="t-ch" style="font-size:.95em;letter-spacing:.05em">'+x.id+'</span></button>').join('')+'</div>'+
+    '<div class="btnrow">'+
+      '<button class="btn blue" onclick="idiomGame()">🎭 看图猜成语</button>'+
+      '<button class="btn pink" onclick="idiomFill()">✏️ 成语补字</button>'+
+    '</div>'+
+    '<div id="idiomBox"></div></div>';
+};
+function idiomGame(){
+  idiomCur=pick(IDIOMS);
+  const w=idiomCur;
+  const others=shuffle(IDIOMS.filter(x=>x.id!==w.id)).slice(0,3);
+  const opts=shuffle([w].concat(others));
+  $('idiomBox').innerHTML='<div class="card" style="margin-top:1em"><p class="sub center">看一看图片，猜猜是哪个成语 👇</p>'+
+    '<div class="bigq">'+w.e+'</div>'+
+    '<div class="grid4">'+opts.map(o=>'<button class="opt" style="font-size:1.15em" data-id="'+o.id+'" onclick="idiomAns(this)">'+o.id+'</button>').join('')+'</div></div>';
+  speak('看图猜成语，它是哪个成语呢？','zh-CN');
+}
+function idiomAns(btn){
+  if(btn.dataset.id===idiomCur.id){
+    correct(btn);
+    speak(idiomCur.id+'！'+idiomCur.m,'zh-CN');
+    state.idiom.correct++;save();checkBadges();
+    if(state.idiom.correct%3===0)completeTask('t_idiom');
+    setTimeout(idiomGame,2600);
+  }else wrong(btn,'再想一想哦');
+}
+let idiomFillCur=null;
+function idiomFill(){
+  const w=pick(IDIOMS);
+  const chars=[];
+  for(const c of w.id)chars.push(c);
+  const pos=rnd(1,3); /* 挖第 2–4 个字 */
+  const ans=chars[pos];
+  idiomFillCur={w:w,ans:ans};
+  const pool=[];
+  IDIOMS.forEach(x=>{for(const c of x.id){if(c!==ans&&pool.indexOf(c)<0)pool.push(c);}});
+  const others=shuffle(pool).slice(0,3);
+  const opts=shuffle([ans].concat(others));
+  const display=chars.map((c,i)=>i===pos?'（　）':c).join('');
+  $('idiomBox').innerHTML='<div class="card" style="margin-top:1em"><p class="sub center">填一填，补全成语 👇</p>'+
+    '<div class="bigq" style="color:var(--accent5)">'+display+'</div>'+
+    '<div style="text-align:center"><button class="speakbtn" onclick="speak(\''+w.id+'\',\'zh-CN\')">🔊</button></div>'+
+    '<div class="grid4">'+opts.map(o=>'<button class="opt" style="font-size:1.7em" data-c="'+o+'" onclick="idiomFillAns(this)">'+o+'</button>').join('')+'</div></div>';
+  speak('补全成语：'+display,'zh-CN');
+}
+function idiomFillAns(btn){
+  const c=idiomFillCur;
+  if(btn.dataset.c===c.ans){
+    correct(btn);
+    speak('对啦，'+c.w.id+'！'+c.w.m,'zh-CN');
+    state.idiom.correct++;save();checkBadges();
+    if(state.idiom.correct%3===0)completeTask('t_idiom');
+    setTimeout(idiomFill,2600);
   }else wrong(btn,'再想一想哦');
 }
 
