@@ -270,6 +270,7 @@ main{max-width:var(--maxw); margin:0 auto; padding:1.2em 1.2em 5em;}
 <main id="main">
   <div class="view active" id="view-home"></div>
   <div class="view" id="view-abc"></div>
+  <div class="view" id="view-pinyin"></div>
   <div class="view" id="view-hanzi"></div>
   <div class="view" id="view-num"></div>
   <div class="view" id="view-poem"></div>
@@ -336,7 +337,57 @@ const WORDS=[ /* 看图识字：常用字 + 词 + emoji */
   {ch:'车',py:'chē',word:'汽车',emoji:'🚗'},{ch:'门',py:'mén',word:'开门',emoji:'🚪'},
   {ch:'手',py:'shǒu',word:'小手',emoji:'✋'},{ch:'口',py:'kǒu',word:'嘴巴',emoji:'👄'},
   {ch:'鱼',py:'yú',word:'金鱼',emoji:'🐠'},{ch:'星',py:'xīng',word:'星星',emoji:'⭐'},
-  {ch:'兔',py:'tù',word:'兔子',emoji:'🐰'},{ch:'猫',py:'māo',word:'小猫',emoji:'🐱'}
+  {ch:'兔',py:'tù',word:'兔子',emoji:'🐰'},{ch:'猫',py:'māo',word:'小猫',emoji:'🐱'},
+  /* 一年级高频字（幼小衔接） */
+  {ch:'人',py:'rén',word:'大人',emoji:'🧑'},{ch:'口',py:'kǒu',word:'张口',emoji:'👄'},
+  {ch:'耳',py:'ěr',word:'耳朵',emoji:'👂'},{ch:'目',py:'mù',word:'目光',emoji:'👀'},
+  {ch:'心',py:'xīn',word:'爱心',emoji:'❤️'},{ch:'石',py:'shí',word:'石头',emoji:'🪨'},
+  {ch:'虫',py:'chóng',word:'小虫',emoji:'🐛'},{ch:'贝',py:'bèi',word:'贝壳',emoji:'🐚'},
+  {ch:'伞',py:'sǎn',word:'雨伞',emoji:'☂️'},{ch:'灯',py:'dēng',word:'台灯',emoji:'💡'},
+  {ch:'电',py:'diàn',word:'闪电',emoji:'⚡'},{ch:'风',py:'fēng',word:'大风',emoji:'🌬️'}
+];
+
+/* 拼音（幼小衔接核心）：p=卡片字母 r=朗读呼读音 */
+const PY_SM=[
+  {p:'b',r:'波'},{p:'p',r:'坡'},{p:'m',r:'摸'},{p:'f',r:'佛'},
+  {p:'d',r:'得'},{p:'t',r:'特'},{p:'n',r:'讷'},{p:'l',r:'勒'},
+  {p:'g',r:'哥'},{p:'k',r:'科'},{p:'h',r:'喝'},{p:'j',r:'机'},
+  {p:'q',r:'七'},{p:'x',r:'西'},{p:'zh',r:'知'},{p:'ch',r:'吃'},
+  {p:'sh',r:'诗'},{p:'r',r:'日'},{p:'z',r:'资'},{p:'c',r:'次'},
+  {p:'s',r:'丝'},{p:'y',r:'医'},{p:'w',r:'屋'}
+];
+const PY_YM=[
+  {p:'a',r:'啊'},{p:'o',r:'喔'},{p:'e',r:'鹅'},{p:'i',r:'衣'},{p:'u',r:'乌'},{p:'ü',r:'鱼'},
+  {p:'ai',r:'爱'},{p:'ei',r:'欸'},{p:'ui',r:'威'},{p:'ao',r:'熬'},{p:'ou',r:'欧'},{p:'iu',r:'优'},
+  {p:'ie',r:'耶'},{p:'üe',r:'约'},{p:'er',r:'儿'},{p:'an',r:'安'},{p:'en',r:'恩'},{p:'in',r:'因'},
+  {p:'un',r:'温'},{p:'ün',r:'晕'},{p:'ang',r:'昂'},{p:'eng',r:'亨'},{p:'ing',r:'英'},{p:'ong',r:'轰'}
+];
+const PY_ZT=[
+  {p:'zhi',r:'知'},{p:'chi',r:'吃'},{p:'shi',r:'诗'},{p:'ri',r:'日'},{p:'zi',r:'资'},{p:'ci',r:'次'},{p:'si',r:'丝'},
+  {p:'yi',r:'衣'},{p:'wu',r:'屋'},{p:'yu',r:'鱼'},{p:'ye',r:'爷'},{p:'yue',r:'月'},{p:'yuan',r:'圆'},{p:'yin',r:'因'},{p:'yun',r:'云'},{p:'ying',r:'鹰'}
+];
+/* 拼读练习：音节 + 汉字 + 图 + 拼读朗读文本（真人语音演示声母韵母连读） */
+const PY_WORDS=[
+  {py:'bà',ch:'爸',word:'爸爸',emoji:'👨',read:'波，啊，爸。爸爸的爸'},
+  {py:'mā',ch:'妈',word:'妈妈',emoji:'👩',read:'摸，啊，妈。妈妈的妈'},
+  {py:'mǎ',ch:'马',word:'小马',emoji:'🐴',read:'摸，啊，马。小马的马'},
+  {py:'tù',ch:'兔',word:'兔子',emoji:'🐰',read:'特，乌，兔。兔子的兔'},
+  {py:'yā',ch:'鸭',word:'鸭子',emoji:'🦆',read:'医，啊，鸭。鸭子的鸭'},
+  {py:'yú',ch:'鱼',word:'金鱼',emoji:'🐟',read:'衣，鱼，鱼。金鱼的鱼'},
+  {py:'gǒu',ch:'狗',word:'小狗',emoji:'🐶',read:'哥，欧，狗。小狗的狗'},
+  {py:'niǎo',ch:'鸟',word:'小鸟',emoji:'🐦',read:'讷，衣，袄，鸟。小鸟的鸟'},
+  {py:'chē',ch:'车',word:'汽车',emoji:'🚗',read:'吃，鹅，车。汽车的车'},
+  {py:'shū',ch:'书',word:'看书',emoji:'📖',read:'诗，乌，书。看书的书'},
+  {py:'bǐ',ch:'笔',word:'铅笔',emoji:'✏️',read:'波，衣，笔。铅笔的笔'},
+  {py:'guǒ',ch:'果',word:'苹果',emoji:'🍎',read:'哥，乌，窝，果。苹果的果'},
+  {py:'huā',ch:'花',word:'花朵',emoji:'🌸',read:'喝，乌，啊，花。花朵的花'},
+  {py:'shù',ch:'树',word:'大树',emoji:'🌳',read:'诗，乌，树。大树的树'},
+  {py:'yuè',ch:'月',word:'月亮',emoji:'🌙',read:'月亮的月'},
+  {py:'shuǐ',ch:'水',word:'喝水',emoji:'💧',read:'诗，乌，诶，水。喝水的水'},
+  {py:'huǒ',ch:'火',word:'火焰',emoji:'🔥',read:'喝，乌，窝，火。火焰的火'},
+  {py:'shān',ch:'山',word:'高山',emoji:'⛰️',read:'诗，安，山。高山的山'},
+  {py:'yún',ch:'云',word:'白云',emoji:'☁️',read:'白云的云'},
+  {py:'yǔ',ch:'雨',word:'下雨',emoji:'🌧️',read:'衣，鱼，雨。下雨的雨'}
 ];
 
 const POEMS=[
@@ -390,7 +441,14 @@ const SAFETY=[ /* 生活与安全常识 */
   {q:'在商场里找不到爸爸妈妈了，应该？',opts:['自己跑出去找','站在原地等，找穿制服的工作人员帮忙','跟着陌生人走'],ans:1,tip:'走丢了不要乱跑，站在原地等爸爸妈妈，或找商场里穿制服的叔叔阿姨帮忙广播。'},
   {q:'小刀、剪刀这些尖尖的东西，应该？',opts:['当玩具玩','放在安全的地方，用时请大人帮忙','到处乱扔'],ans:1,tip:'尖锐的东西很危险，用的时候请大人帮忙，用完放回原处。'},
   {q:'看到插座里的小孔，可以伸手进去吗？',opts:['可以，很好玩','不可以，会触电','用铁丝掏一掏'],ans:1,tip:'插座里有电，小手和小棍子都不能伸进去，用电安全要记牢！'},
-  {q:'迷路了要找警察叔叔帮忙，报警电话是？',opts:['110','120','119'],ans:0,tip:'110 找警察、120 是急救、119 是火警，记住了吗？' }
+  {q:'迷路了要找警察叔叔帮忙，报警电话是？',opts:['110','120','119'],ans:0,tip:'110 找警察、120 是急救、119 是火警，记住了吗？' },
+  /* 入学好习惯（幼小衔接） */
+  {q:'上课的时候想发言，应该怎么做？',opts:['举手，等老师叫','大声喊出来','离开座位'],ans:0,tip:'想发言先举手，老师叫到名字再站起来大声说，这是课堂好习惯！'},
+  {q:'下课了，最好先做什么？',opts:['先上厕所、喝口水','马上追跑打闹','一直坐着不动'],ans:0,tip:'下课先上厕所、喝水，准备好下节课的书本，再和小伙伴玩安全的游戏。'},
+  {q:'放学回家，书包应该谁来整理？',opts:['自己整理','全部让妈妈整理','随便乱放'],ans:0,tip:'自己的书包自己整理，削好铅笔、装好课本，做能干的一年级小学生！'},
+  {q:'早上见到老师，应该怎么做？',opts:['大声问好','低头跑过去','装作没看见'],ans:0,tip:'见到老师和同学主动问好，做个有礼貌的小学生，大家都会喜欢你！'},
+  {q:'晚上几点睡觉最好呢？',opts:['9 点左右','12 点','想几点就几点'],ans:0,tip:'早睡早起精神好，晚上 9 点左右睡觉，第二天上课才不打瞌睡哦！'},
+  {q:'写作业的时候，坐姿应该怎么样？',opts:['坐端正，一尺一拳一寸','趴在桌上','躺在床上'],ans:0,tip:'眼睛离书本一尺，胸口离桌子一拳，手指离笔尖一寸，保护眼睛写字又漂亮！'}
 ];
 
 const MEM_CARDS=['🐶','🐱','🐰','🐼','🦊','🐸','🐵','🦁'];
@@ -410,7 +468,7 @@ function freshState(){return{
   stars:0, comboBest:0, combo:0,
   streak:{last:'',days:0},
   badges:{},
-  letters:{matched:0}, hanzi:{correct:0},
+  letters:{matched:0}, hanzi:{correct:0}, pinyin:{correct:0}, clock:{correct:0},
   numbers:{addCorrect:0,countCorrect:0},
   poems:{read:{}},
   logic:{correct:0,memWin:0},
@@ -724,6 +782,8 @@ const BADGES=[
   {id:'first',ic:'⭐',name:'第一颗星',desc:'获得第 1 颗星星',cond:s=>s.stars>=1},
   {id:'abc',ic:'🔤',name:'字母小达人',desc:'配对成功 5 次字母',cond:s=>s.letters.matched>=5},
   {id:'hanzi',ic:'📖',name:'识字小学者',desc:'看图识字答对 10 题',cond:s=>s.hanzi.correct>=10},
+  {id:'pinyin',ic:'✏️',name:'拼音小能手',desc:'拼读答对 10 题',cond:s=>s.pinyin.correct>=10},
+  {id:'clock',ic:'⏰',name:'时间小主人',desc:'认对 5 次钟表',cond:s=>s.clock.correct>=5},
   {id:'math',ic:'🧮',name:'数学小天才',desc:'算术答对 10 题',cond:s=>s.numbers.addCorrect>=10},
   {id:'count',ic:'🍎',name:'数数小能手',desc:'数数答对 10 题',cond:s=>s.numbers.countCorrect>=10},
   {id:'poem',ic:'📜',name:'古诗小状元',desc:'朗读全部 8 首古诗',cond:s=>Object.keys(s.poems.read).length>=8},
@@ -754,6 +814,8 @@ function badgeWallHTML(){
 const TASK_POOL=[
   {id:'t_abc',ic:'🔤',name:'玩 1 局字母配对',hint:'去字母乐园配对 1 次'},
   {id:'t_hanzi',ic:'📖',name:'识字答对 3 题',hint:'去汉字城堡看图识字'},
+  {id:'t_pinyin',ic:'✏️',name:'拼读答对 3 题',hint:'去拼音王国拼一拼'},
+  {id:'t_clock',ic:'⏰',name:'认对 2 次时间',hint:'去数字王国认时钟'},
   {id:'t_math',ic:'🧮',name:'算术答对 3 题',hint:'去数字王国做算术'},
   {id:'t_poem',ic:'📜',name:'朗读 1 首古诗',hint:'去古诗花园点一首诗'},
   {id:'t_logic',ic:'🧩',name:'逻辑答对 3 题',hint:'去逻辑小岛挑战'},
@@ -782,6 +844,7 @@ function completeTask(id){
 const MODULES=[
   {id:'home',name:'🏠 首页',color:'#7BB661'},
   {id:'abc',name:'🔤 字母乐园',color:'#6FA8DC'},
+  {id:'pinyin',name:'✏️ 拼音王国',color:'#9B8CE0'},
   {id:'hanzi',name:'📖 汉字城堡',color:'#E886B0'},
   {id:'num',name:'🧮 数字王国',color:'#F2A649'},
   {id:'poem',name:'📜 古诗花园',color:'#7BB661'},
@@ -808,7 +871,8 @@ renderer.home=function(){
   const s=state;
   const prog={
     abc:Math.min(100,s.letters.matched*20), hanzi:Math.min(100,s.hanzi.correct*5),
-    num:Math.min(100,(s.numbers.addCorrect+s.numbers.countCorrect)*2.5),
+    pinyin:Math.min(100,s.pinyin.correct*5),
+    num:Math.min(100,(s.numbers.addCorrect+s.numbers.countCorrect+s.clock.correct)*2.5),
     poem:Math.round(Object.keys(s.poems.read).length/8*100),
     logic:Math.min(100,(s.logic.correct+s.logic.memWin*5)*5),
     safe:Math.min(100,s.safety.correct*20)
@@ -841,7 +905,7 @@ renderer.home=function(){
         '<span class="m-ic">'+m.name.split(' ')[0]+'</span>'+m.name.split(' ')[1]+'</button>').join('')+
     '</div></div>'+
     '<div class="card"><div class="mtitle">🌱 学习进度</div><div class="rings">'+
-      ring(prog.abc,'#6FA8DC','字母')+ring(prog.hanzi,'#E886B0','识字')+ring(prog.num,'#F2A649','数学')+
+      ring(prog.abc,'#6FA8DC','字母')+ring(prog.hanzi,'#E886B0','识字')+ring(prog.pinyin,'#B08BD0','拼音')+ring(prog.num,'#F2A649','数学')+
       ring(prog.poem,'#7BB661','古诗')+ring(prog.logic,'#9B8CE0','逻辑')+ring(prog.safe,'#E886B0','安全')+
     '</div></div>'+
     '<div class="card"><div class="mtitle">🏅 成就徽章墙</div><p class="sub">已解锁 '+Object.keys(s.badges).length+' / '+BADGES.length+' 枚徽章</p>'+
@@ -878,10 +942,57 @@ function abcAns(btn){
   }else wrong(btn,L.toLowerCase());
 }
 
+/* ---- 拼音王国（幼小衔接）---- */
+let pyCur=null;
+renderer.pinyin=function(){
+  const group=(title,arr,color)=>
+    '<p class="sub" style="margin:1.1em 0 .5em;font-weight:800;color:var(--ink)">'+title+'</p>'+
+    '<div class="tilegrid">'+arr.map(p=>
+      '<button class="tile" style="background:'+color+'" onclick="speak(\''+p.r+'，'+p.r+'\',\'zh-CN\')">'+
+      '<span class="t-ch" style="font-size:1.6em">'+p.p+'</span><span class="low">'+p.r+'</span></button>').join('')+'</div>';
+  $('view-pinyin').innerHTML='<div class="card">'+
+    '<div class="mtitle">✏️ 拼音王国</div>'+
+    '<p class="sub">点卡片听发音；玩「拼一拼」，像一年级小学生一样读拼音！</p>'+
+    group('🔊 声母（23 个）',PY_SM,'#6FA8DC')+
+    group('🎵 韵母（24 个）',PY_YM,'#7BB661')+
+    group('⭐ 整体认读音节（16 个）',PY_ZT,'#E886B0')+
+    '<div class="btnrow"><button class="btn purple" onclick="pyGame()">🎮 开始拼一拼</button></div>'+
+    '<div id="pyBox"></div></div>';
+};
+function pyGame(){
+  pyCur=pick(PY_WORDS);
+  const w=pyCur;
+  const others=shuffle(PY_WORDS.filter(x=>x.ch!==w.ch)).slice(0,3);
+  const opts=shuffle([w].concat(others));
+  if(Math.random()<.5){ /* 听拼读，选汉字 */
+    $('pyBox').innerHTML='<div class="card" style="margin-top:1em"><p class="sub center">听一听拼读，选出正确的汉字 👇</p>'+
+      '<div class="bigq" style="color:var(--accent5)">'+w.py+'</div>'+
+      '<div style="text-align:center"><button class="speakbtn" onclick="speak(\''+w.read+'\',\'zh-CN\')">🔊</button></div>'+
+      '<div class="grid4">'+opts.map(o=>'<button class="opt" style="font-size:1.9em" data-ch="'+o.ch+'" onclick="pyAns(this)">'+o.ch+'</button>').join('')+'</div></div>';
+    speak(w.read,'zh-CN');
+  }else{ /* 看图，选音节 */
+    $('pyBox').innerHTML='<div class="card" style="margin-top:1em"><p class="sub center">看一看图片，选出它的音节 👇</p>'+
+      '<div class="bigq">'+w.emoji+'</div>'+
+      '<div style="text-align:center"><button class="speakbtn" onclick="speak(\''+w.word+'\',\'zh-CN\')">🔊</button></div>'+
+      '<div class="grid4">'+opts.map(o=>'<button class="opt" style="font-size:1.7em" data-ch="'+o.ch+'" onclick="pyAns(this)">'+o.py+'</button>').join('')+'</div></div>';
+    speak(w.word,'zh-CN');
+  }
+}
+function pyAns(btn){
+  const w=pyCur;
+  if(btn.dataset.ch===w.ch){
+    correct(btn);
+    speak(w.read,'zh-CN');
+    state.pinyin.correct++;save();checkBadges();
+    if(state.pinyin.correct%3===0)completeTask('t_pinyin');
+    setTimeout(pyGame,1400);
+  }else wrong(btn,'再听一听拼读哦');
+}
+
 /* ============ 汉字城堡 ============ */
 renderer.hanzi=function(){
   $('view-hanzi').innerHTML='<div class="card">'+
-    '<div class="mtitle">📖 汉字城堡</div><p class="sub">点汉字卡片听朗读；玩「看图选字」认识更多字宝宝！</p>'+
+    '<div class="mtitle">📖 汉字城堡</div><p class="sub">点汉字卡片听朗读；玩「看图选字」，认识一年级常用字！</p>'+
     '<div class="tilegrid">'+WORDS.map((w,i)=>
       '<button class="tile" style="background:'+LCOLOR[i%5]+'" onclick="speak(\''+w.ch+'，'+w.word+'\',\'zh-CN\')">'+
       '<span class="t-emoji">'+w.emoji+'</span><span class="t-ch">'+w.ch+'</span><span class="low">'+w.py+'</span></button>').join('')+'</div>'+
@@ -914,19 +1025,21 @@ function hanziAns(btn){
 /* ============ 数字王国 ============ */
 let numTabCur='count';
 renderer.num=function(){
-  $('view-num').innerHTML='<div class="card"><div class="mtitle">🧮 数字王国</div><p class="sub">数一数、算一算、比一比，成为数学小天才！</p>'+
+  $('view-num').innerHTML='<div class="card"><div class="mtitle">🧮 数字王国</div><p class="sub">数一数、算一算、比一比、认时钟，成为数学小天才！</p>'+
     '<div class="seg" id="numSeg">'+
       '<button data-t="count" class="'+(numTabCur==='count'?'on':'')+'" onclick="numTab(\'count\',this)">🍒 数一数</button>'+
       '<button data-t="calc" class="'+(numTabCur==='calc'?'on':'')+'" onclick="numTab(\'calc\',this)">➕ 算一算</button>'+
       '<button data-t="cmp" class="'+(numTabCur==='cmp'?'on':'')+'" onclick="numTab(\'cmp\',this)">⚖️ 比大小</button>'+
+      '<button data-t="clock" class="'+(numTabCur==='clock'?'on':'')+'" onclick="numTab(\'clock\',this)">⏰ 认时钟</button>'+
     '</div><div id="numBox"></div></div>';
-  numTabCur==='count'?numCount():numTabCur==='calc'?numCalc():numCmp();
+  numRun();
 };
+function numRun(){numTabCur==='count'?numCount():numTabCur==='calc'?numCalc():numTabCur==='cmp'?numCmp():clockGame();}
 function numTab(t,btn){
   numTabCur=t;
   document.querySelectorAll('#numSeg button').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
-  t==='count'?numCount():t==='calc'?numCalc():numCmp();
+  numRun();
 }
 function fruitRow(n){
   const f=pick(FRUITS);
@@ -949,8 +1062,11 @@ function numCountAns(btn){
 }
 function numCalc(){
   const add=Math.random()<.6;
+  const hard=Math.random()<.4; /* 40% 出 20 以内题，衔接一年级 */
   let a,b,ans,sign;
-  if(add){a=rnd(0,9);b=rnd(0,10-a);ans=a+b;sign='+';}
+  if(hard&&add){a=rnd(11,18);b=rnd(1,9-a%10);ans=a+b;sign='+';}
+  else if(hard){a=rnd(11,19);b=rnd(1,a%10);ans=a-b;sign='−';}
+  else if(add){a=rnd(0,9);b=rnd(0,10-a);ans=a+b;sign='+';}
   else{a=rnd(1,10);b=rnd(0,a);ans=a-b;sign='−';}
   const opts=shuffle([ans,ans+rnd(1,3),Math.max(0,ans-rnd(1,3)),ans+rnd(4,6)]);
   $('numBox').innerHTML='<p class="sub center">算一算，选出正确答案 👇</p>'+
@@ -980,6 +1096,47 @@ function numCmp(){
 function numCmpAns(btn,ok){
   if(ok){correct(btn);setTimeout(numCmp,700);}
   else wrong(btn,'再比一比哦');
+}
+
+/* ---- 认时钟（幼小衔接）---- */
+let clockCur=null;
+function clockSVG(h,m){
+  const cx=100,cy=100;
+  let s='<svg viewBox="0 0 200 200" style="width:min(48vw,19em);display:block;margin:0 auto 1em">';
+  s+='<circle cx="100" cy="100" r="94" fill="var(--card)" stroke="var(--accent3)" stroke-width="7"/>';
+  for(let i=1;i<=12;i++){
+    const a=i*Math.PI/6;
+    s+='<text x="'+(cx+Math.sin(a)*76).toFixed(1)+'" y="'+(cy-Math.cos(a)*76+6).toFixed(1)+'" font-size="17" font-weight="800" text-anchor="middle" fill="var(--ink)">'+i+'</text>';
+  }
+  const ha=((h%12)+m/60)/12*2*Math.PI, ma=m/60*2*Math.PI;
+  s+='<line x1="100" y1="100" x2="'+(cx+Math.sin(ha)*46).toFixed(1)+'" y2="'+(cy-Math.cos(ha)*46).toFixed(1)+'" stroke="var(--accent2)" stroke-width="8" stroke-linecap="round"/>';
+  s+='<line x1="100" y1="100" x2="'+(cx+Math.sin(ma)*64).toFixed(1)+'" y2="'+(cy-Math.cos(ma)*64).toFixed(1)+'" stroke="var(--accent3)" stroke-width="5" stroke-linecap="round"/>';
+  s+='<circle cx="100" cy="100" r="6" fill="var(--ink)"/></svg>';
+  return s;
+}
+function clockGame(){
+  const half=Math.random()<.4;
+  const h=rnd(1,12);
+  clockCur={h:h,half:half};
+  const ansT=h+(half?'点半':'点');
+  const pool=[ansT];
+  while(pool.length<4){
+    const t=rnd(1,12)+(Math.random()<.5?'点半':'点');
+    if(pool.indexOf(t)<0)pool.push(t);
+  }
+  $('numBox').innerHTML='<p class="sub center">看一看，钟面上是几点？👇</p>'+clockSVG(h,half?30:0)+
+    '<div class="grid4">'+shuffle(pool).map(o=>'<button class="opt" style="font-size:1.15em" onclick="clockAns(this)">'+o+'</button>').join('')+'</div>';
+  speak('看一看，钟面上是几点？','zh-CN');
+}
+function clockAns(btn){
+  const c=clockCur, ansT=c.h+(c.half?'点半':'点');
+  if(btn.textContent===ansT){
+    correct(btn);
+    speak('对啦！'+(c.half?'分针指向六，时针走过'+c.h+'，就是'+ansT:'分针指向十二，时针指向'+c.h+'，就是'+ansT),'zh-CN');
+    state.clock.correct++;save();checkBadges();
+    if(state.clock.correct%2===0)completeTask('t_clock');
+    setTimeout(clockGame,1600);
+  }else wrong(btn,'先看短短的时针哦');
 }
 
 /* ============ 古诗花园 ============ */
@@ -1123,7 +1280,7 @@ renderer.safe=function(){
 function safeRender(){
   const q=SAFETY[safeIdx];
   $('view-safe').innerHTML='<div class="card safecard"><div class="mtitle">🛡️ 安全课堂</div>'+
-    '<p class="sub">学会保护自己，是最了不起的本领！</p>'+
+    '<p class="sub">安全常识 + 入学好习惯，做最棒的一年级预备生！</p>'+
     '<p class="sub" style="font-size:1em;color:var(--ink);font-weight:700;text-align:center">第 '+(safeIdx+1)+' / '+SAFETY.length+' 题'+(state.safety.answered[safeIdx]?' ✅ 已学会':'')+'</p>'+
     '<div style="text-align:center"><button class="speakbtn" onclick="speak(\''+q.q+'\',\'zh-CN\')">🔊 听题目</button></div>'+
     '<div class="center" style="font-size:1.25em;font-weight:800;margin-bottom:.8em">'+q.q+'</div>'+
